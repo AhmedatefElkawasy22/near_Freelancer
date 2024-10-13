@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LoginServiceService } from '../../Services/LoginService/login-service.service';
+import { LoginService } from '../../Services/Login/login-service';
 import { error } from 'console';
 
 @Component({
@@ -24,7 +24,7 @@ export class LoginComponent {
 
   constructor(
     private snackBar: MatSnackBar,
-    private _loginService: LoginServiceService
+    private _loginService: LoginService
   ) {
     this.UserLoginForm = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),

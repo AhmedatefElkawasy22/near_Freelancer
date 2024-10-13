@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import {  Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RegisterServiceService } from '../../Services/RegisterService/register-service.service';
+import { RegisterService } from '../../Services/Register/register-service';
 
 
 @Component({
@@ -134,7 +134,7 @@ export class RegistrationComponent {
   UserRegisterForm: FormGroup;
   codeOfCountry: string = '';
 
-  constructor(private snackBar: MatSnackBar,private _registerService: RegisterServiceService , private _route:Router ) {
+  constructor(private snackBar: MatSnackBar,private _registerService: RegisterService , private _route:Router ) {
     this.UserRegisterForm = new FormGroup(
       {
         name: new FormControl('', [

@@ -18,22 +18,13 @@
               placeholder="Enter your name"
             />
             <div *ngIf="UserRegisterForm.get('name')?.touched">
-              <div
-                *ngIf="UserRegisterForm.get('name')?.errors?.['required']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('name')?.errors?.['required']" class="text-danger">
                 Name is required.
               </div>
-              <div
-                *ngIf="UserRegisterForm.get('name')?.errors?.['pattern']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('name')?.errors?.['pattern']" class="text-danger">
                 Name must contain only alphabets and numbers (3-50 characters).
               </div>
-              <div
-                *ngIf="UserRegisterForm.get('name')?.errors?.['minlength']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('name')?.errors?.['minlength']" class="text-danger">
                 Name must be at least 5 characters long.
               </div>
             </div>
@@ -51,10 +42,7 @@
                 [ngModelOptions]="{ standalone: true }"
               >
                 <option value="">Select Country Code</option>
-                <option
-                  *ngFor="let country of countryCodes"
-                  [value]="country.code"
-                >
+                <option *ngFor="let country of countryCodes" [value]="country.code">
                   {{ country.name }} ({{ country.code }})
                 </option>
               </select>
@@ -67,16 +55,10 @@
               />
             </div>
             <div *ngIf="UserRegisterForm.get('phoneNumber')?.touched">
-              <div
-                *ngIf="UserRegisterForm.get('phoneNumber')?.errors?.['required']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('phoneNumber')?.errors?.['required']" class="text-danger">
                 Phone number is required.
               </div>
-              <div
-                *ngIf="UserRegisterForm.get('phoneNumber')?.errors?.['pattern']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('phoneNumber')?.errors?.['pattern']" class="text-danger">
                 Enter a valid phone number (10-15 digits).
               </div>
             </div>
@@ -93,16 +75,10 @@
               placeholder="Enter email"
             />
             <div *ngIf="UserRegisterForm.get('email')?.touched">
-              <div
-                *ngIf="UserRegisterForm.get('email')?.errors?.['required']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('email')?.errors?.['required']" class="text-danger">
                 Email is required.
               </div>
-              <div
-                *ngIf="UserRegisterForm.get('email')?.errors?.['email']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('email')?.errors?.['email']" class="text-danger">
                 Please enter a valid email.
               </div>
             </div>
@@ -119,22 +95,13 @@
               placeholder="Enter password"
             />
             <div *ngIf="UserRegisterForm.get('password')?.touched">
-              <div
-                *ngIf="UserRegisterForm.get('password')?.errors?.['required']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('password')?.errors?.['required']" class="text-danger">
                 Password is required.
               </div>
-              <div
-                *ngIf="UserRegisterForm.get('password')?.errors?.['minlength']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('password')?.errors?.['minlength']" class="text-danger">
                 Password must be at least 8 characters long.
               </div>
-              <div
-                *ngIf="UserRegisterForm.get('password')?.errors?.['pattern']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('password')?.errors?.['pattern']" class="text-danger">
                 Password must contain letters and numbers.
               </div>
             </div>
@@ -151,18 +118,11 @@
               placeholder="Confirm password"
               required
             />
-
             <div *ngIf="UserRegisterForm.get('confirmPassword')?.touched">
-              <div
-                *ngIf="UserRegisterForm.errors?.['passwordMismatch']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.errors?.['passwordMismatch']" class="text-danger">
                 Passwords do not match.
               </div>
-              <div
-                *ngIf="UserRegisterForm.get('confirmPassword')?.errors?.['required']"
-                class="alert alert-danger"
-              >
+              <div *ngIf="UserRegisterForm.get('confirmPassword')?.errors?.['required']" class="text-danger">
                 Confirm Password is required.
               </div>
             </div>
@@ -178,10 +138,7 @@
               class="form-control"
               placeholder="Enter street address"
             />
-            <div
-              *ngIf="UserRegisterForm.get('street')?.touched && UserRegisterForm.get('street')?.errors?.['required']"
-              class="alert alert-danger"
-            >
+            <div *ngIf="UserRegisterForm.get('street')?.touched && UserRegisterForm.get('street')?.errors?.['required']" class="text-danger">
               Street address is required.
             </div>
           </div>
@@ -196,10 +153,7 @@
               class="form-control"
               placeholder="Enter city"
             />
-            <div
-              *ngIf="UserRegisterForm.get('city')?.touched && UserRegisterForm.get('city')?.errors?.['required']"
-              class="alert alert-danger"
-            >
+            <div *ngIf="UserRegisterForm.get('city')?.touched && UserRegisterForm.get('city')?.errors?.['required']" class="text-danger">
               City is required.
             </div>
           </div>
@@ -214,10 +168,7 @@
               class="form-control"
               placeholder="Enter state"
             />
-            <div
-              *ngIf="UserRegisterForm.get('state')?.touched && UserRegisterForm.get('state')?.errors?.['required']"
-              class="alert alert-danger"
-            >
+            <div *ngIf="UserRegisterForm.get('state')?.touched && UserRegisterForm.get('state')?.errors?.['required']" class="text-danger">
               State is required.
             </div>
           </div>
@@ -226,14 +177,11 @@
           <div class="form-group mt-3">
             <label for="gender">Gender</label>
             <select id="gender" formControlName="gender" class="form-control">
-              <option [value]="null">Select Gender</option> 
-              <option [value]="0">Male</option> 
-              <option [value]="1">Female</option> 
+              <option [value]="null">Select Gender</option>
+              <option [value]="0">Male</option>
+              <option [value]="1">Female</option>
             </select>
-            <div
-              *ngIf="UserRegisterForm.get('gender')?.touched && UserRegisterForm.get('gender')?.errors?.['required']"
-              class="alert alert-danger"
-            >
+            <div *ngIf="UserRegisterForm.get('gender')?.touched && UserRegisterForm.get('gender')?.errors?.['required']" class="text-danger">
               Gender is required.
             </div>
           </div>
@@ -247,19 +195,12 @@
               formControlName="dob"
               class="form-control"
             />
-            <div
-              *ngIf="UserRegisterForm.get('dob')?.touched && UserRegisterForm.get('dob')?.errors?.['required']"
-              class="alert alert-danger"
-            >
+            <div *ngIf="UserRegisterForm.get('dob')?.touched && UserRegisterForm.get('dob')?.errors?.['required']" class="text-danger">
               Date of Birth is required.
             </div>
           </div>
 
-          <button
-            [disabled]="UserRegisterForm.invalid"
-            type="submit"
-            class="btn btn-success w-100 mt-4"
-          >
+          <button [disabled]="UserRegisterForm.invalid" type="submit" class="btn btn-success w-100 mt-4">
             Register
           </button>
 

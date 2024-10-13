@@ -9,14 +9,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-<<<<<<< HEAD
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
-     provideRouter(routes), provideClientHydration(),
-      provideStore(), provideEffects(),
-       provideAnimationsAsync(),provideHttpClient(
-        withFetch(),
-      ),]
-=======
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
@@ -26,5 +18,4 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
   ],
->>>>>>> 3b618e7bd9479d6ddcb145d1ca7f908f0c73d783
 };

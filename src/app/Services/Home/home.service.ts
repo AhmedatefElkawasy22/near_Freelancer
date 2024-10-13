@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
 import { FreelancersResult } from '../../models/freelancers-result';
 import { ApiResponse } from '../../models/api-response';
+import { environment } from '../../../environment/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class HomeService {
       params = params.set('search', search);
     }
 
-    return this._http.get<ApiResponse>(`http://localhost:5104/api/Freelancer/filter-freelancers`, { params })
+    return this._http.get<ApiResponse>(`${environment.BaseURL}/api/Freelancer/filter-freelancers`, { params })
     .pipe(
       catchError(error => {
         console.error('Error occurred in API call:', error);
