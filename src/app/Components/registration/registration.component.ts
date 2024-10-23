@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component  } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -7,23 +7,21 @@ import {
   ValidatorFn,
   AbstractControl,
   ReactiveFormsModule,
-  FormsModule
+  FormsModule,
 } from '@angular/forms';
-import {  Router, RouterLink } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, RouterLink } from '@angular/router';
 import { RegisterServiceService } from '../../Services/RegisterService/register-service.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
-
   selector: 'app-registration',
   standalone: true,
-  imports: [RouterLink, NgIf, ReactiveFormsModule , NgFor ,FormsModule  ],
+  imports: [RouterLink, NgIf, ReactiveFormsModule, NgFor, FormsModule],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent {
-
   countryCodes = [
     { name: 'United States', code: '+1' },
     { name: 'United Kingdom', code: '+44' },
@@ -134,7 +132,11 @@ export class RegistrationComponent {
   UserRegisterForm: FormGroup;
   codeOfCountry: string = '';
 
-  constructor(private snackBar: MatSnackBar,private _registerService: RegisterServiceService , private _route:Router ) {
+  constructor(
+    private _registerService: RegisterServiceService,
+    private _router: Router,
+    private dialog: MatDialog
+  ) {
     this.UserRegisterForm = new FormGroup(
       {
         name: new FormControl('', [
@@ -151,7 +153,9 @@ export class RegistrationComponent {
         password: new FormControl('', [
           Validators.required,
           Validators.minLength(8), // Minimum length of 8 characters
-          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-={}|\\[\\]:";\'<>?,./]).{8,}$')
+          Validators.pattern(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-={}|\\[\\]:";\'<>?,./]).{8,}$'
+          ),
         ]),
         confirmPassword: new FormControl('', [Validators.required]),
         street: new FormControl('', [
@@ -180,48 +184,61 @@ export class RegistrationComponent {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
 
-    return password && confirmPassword && password !== confirmPassword? { passwordMismatch: true }: null;
+    return password && confirmPassword && password !== confirmPassword
+      ? { passwordMismatch: true }
+      : null;
   };
 
   onSubmit() {
     if (this.UserRegisterForm.valid) {
       const phoneNumber = this.UserRegisterForm.get('phoneNumber')?.value;
-      const modifiedPhoneNumber = phoneNumber ? this.codeOfCountry + phoneNumber.substring(1) : '';
-      const originalPhoneNumber = phoneNumber;  
-  
+      const modifiedPhoneNumber = phoneNumber
+        ? this.codeOfCountry + phoneNumber.substring(1)
+        : '';
+      const originalPhoneNumber = phoneNumber;
+
       this.UserRegisterForm.get('phoneNumber')?.setValue(modifiedPhoneNumber);
       const GenderNumber = Number(this.UserRegisterForm.get('gender')?.value);
       this.UserRegisterForm.get('gender')?.setValue(GenderNumber);
       //console.log("data as json", this.UserRegisterForm.value)
-      
-      
+
       this._registerService.registerUser(this.UserRegisterForm.value).subscribe(
-        response => {
+        (response) => {
           //console.log('User registered successfully:', response );
-          this.openSnackBar(`${response.message} , please confirm your email ` , 'Close');
-           this._route.navigateByUrl('/login');
+          this.openAlertDialog(
+            'Success',
+            `${response.message} , please confirm your email `
+          );
+          setTimeout(() => {
+            this._router.navigateByUrl('/login');
+          }, 5000);
           // Reset the phone number back to the original value
-          this.UserRegisterForm.get('phoneNumber')?.setValue(originalPhoneNumber);
+          this.UserRegisterForm.get('phoneNumber')?.setValue(
+            originalPhoneNumber
+          );
         },
-        error => {
+        (error) => {
           //console.error('Registration failed:', error);
-          this.openSnackBar('Registration failed: ' + (error?.error?.title || error?.error?.message),'Close');
+          this.openAlertDialog(
+            'Error',
+            'Registration failed: ' +
+              (error?.error?.title || error?.error?.message)
+          );
           // Reset the phone number back to the original value
-          this.UserRegisterForm.get('phoneNumber')?.setValue(originalPhoneNumber);
+          this.UserRegisterForm.get('phoneNumber')?.setValue(
+            originalPhoneNumber
+          );
         }
       );
     } else {
-      this.openSnackBar('Please fill in the data correctly.', 'Close');
+      this.openAlertDialog('Error', 'Please fill in the data correctly.');
     }
   }
-  
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 7000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['custom-snackbar'],
+
+  openAlertDialog(title: string, message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      data: { title: title, message: message },
     });
   }
 

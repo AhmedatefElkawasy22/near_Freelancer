@@ -8,9 +8,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginServiceService } from '../../Services/LoginService/login-service.service';
-import { error } from 'console';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +23,8 @@ export class LoginComponent {
   UserLoginForm: FormGroup;
 
   constructor(
-    private snackBar: MatSnackBar,
-    private _loginService: LoginServiceService
+    private _loginService: LoginServiceService,
+    private dialog: MatDialog
   ) {
     this.UserLoginForm = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
@@ -37,24 +37,23 @@ export class LoginComponent {
       //console.log(this.UserLoginForm.value);
       this._loginService.LoginUser(this.UserLoginForm.value).subscribe(
         (data) => {
-          this.openSnackBar('wellcome 😊', 'Close');
+          this.openAlertDialog('Success', 'wellcome 😊');
+          // save token in local storage
+          // navigate to Home page
         },
         (error) => {
           //console.log('res', error);
-          this.openSnackBar(error.error.message , 'Close');
+          this.openAlertDialog('Error', error.error.message);
         }
       );
     } else {
-      this.openSnackBar('Please fill in the data correctly.', 'Close');
+      this.openAlertDialog('Error', 'Please fill in the data correctly.');
     }
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 5000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['custom-snackbar'],
+  openAlertDialog(title: string, message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      data: { title: title, message: message },
     });
   }
 }

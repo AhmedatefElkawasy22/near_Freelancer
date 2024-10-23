@@ -1,0 +1,23 @@
+.alert-dialog-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  mat-dialog-title {
+    color: #ff4081; 
+  }
+  
+  mat-dialog-content {
+    font-size: 1.2rem;
+    margin: 15px 0;
+  }
+  
+  button {
+    transition: all 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #3f51b5;
+    transform: scale(1.05);
+  }
+  
