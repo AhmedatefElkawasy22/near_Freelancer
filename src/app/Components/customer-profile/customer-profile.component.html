@@ -1,0 +1,87 @@
+<div class="container-fluid">
+
+
+    <div class="  row justify-content-center">
+        <div class="container-fluid col-lg-3 col-md-4 col-sm-6 col-12  card shadow  m-2 align-items-center " style="height: 600px;">
+          <div class="container-fluid " style="height: 300px;">
+            <img class="rounded-circle shadow-4-strong img-fluid m-2"   alt={{customerProfileInfo?.image}} [src]="customerProfileInfo?.image" />
+
+          </div>
+            <div class=" row justify-content-between">
+                <div class=" col-md-4 col-sm-12 mb-2">
+                  <button class="btn btn-outline-dark ">Change password</button>
+                </div>
+                <div class=" col-md-4 col-sm-12 mb-2">
+                  <button class="btn btn-outline-dark ">Edit information</button>
+                </div>
+                <div class=" col-md-4 col-sm-12 mb-2">
+                  <button class="btn btn-outline-danger ">Delete Account</button>
+                </div>
+              </div>
+              
+              
+                <div class="   text-center m-2  card-body" >
+                    <h1 class="">{{customerProfileInfo?.name}}</h1>
+                  
+               </div>
+        </div> 
+
+
+        <div class=" col-lg-8 col-md-7 col-sm-6 col-12  card shadow  m-2 align-items-center " >
+            <div>
+                <img src="" alt="">
+              </div>
+                <div class=" container-fluid">
+                  <h3>My Request</h3>
+                  <table class="table">
+                      
+                    <thead>
+                      <tr>
+                        <th>Request</th>
+                        <th>Status</th>
+                        <th>Freelancer</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    
+                    
+                       <tbody>
+                       @for(item of requests;track item.freelancerId)
+                       { <tr>
+                        <td>{{item.name}}</td>
+                        <td>{{item.status}}</td>
+                        <td>{{item.freelancerName}}</td>
+                        <td>{{item.dateTime}}</td>
+                      </tr>
+                       }
+                       </tbody>
+                    </table>
+
+
+
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center">
+                          <!-- Previous button -->
+                          <li class="page-item" [class.disabled]="pageIndex === 1">
+                              <button class="page-link" (click)="onPageChange(pageIndex - 1)">Previous</button>
+                          </li>
+                  
+                          <!-- Dynamic page numbers -->
+                          <li *ngFor="let page of [].constructor(totalPages); let i = index" class="page-item" [class.active]="i + 1 === pageIndex">
+                              <button class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</button>
+                          </li>
+                  
+                          <!-- Next button -->
+                          <li class="page-item" [class.disabled]="pageIndex === totalPages">
+                              <button class="page-link" (click)="onPageChange(pageIndex + 1)">Next</button>
+                          </li>
+                      </ul>
+                  </nav>
+        </div>
+    
+    
+        
+        </div> 
+      
+    </div>
+</div>

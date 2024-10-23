@@ -10,9 +10,9 @@ import {
   FormsModule,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { RegisterServiceService } from '../../Services/RegisterService/register-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { RegisterService } from '../../Services/Register/register-service';
 
 @Component({
   selector: 'app-registration',
@@ -133,7 +133,7 @@ export class RegistrationComponent {
   codeOfCountry: string = '';
 
   constructor(
-    private _registerService: RegisterServiceService,
+    private _registerService: RegisterService,
     private _router: Router,
     private dialog: MatDialog
   ) {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -8,9 +8,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginServiceService } from '../../Services/LoginService/login-service.service';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { LoginService } from '../../Services/Login/login-service';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +23,9 @@ export class LoginComponent {
   UserLoginForm: FormGroup;
 
   constructor(
-    private _loginService: LoginServiceService,
-    private dialog: MatDialog
+    private _loginService: LoginService,
+    private dialog: MatDialog,
+    private _router: Router
   ) {
     this.UserLoginForm = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
@@ -34,12 +35,15 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.UserLoginForm.valid) {
-      //console.log(this.UserLoginForm.value);
       this._loginService.LoginUser(this.UserLoginForm.value).subscribe(
         (data) => {
           this.openAlertDialog('Success', 'wellcome 😊');
-          // save token in local storage
+          // // save token in local storage
+          // console.log("wait token", data);
           // navigate to Home page
+          setTimeout(() => {
+            this._router.navigateByUrl('/home');
+          }, 3000);
         },
         (error) => {
           //console.log('res', error);
