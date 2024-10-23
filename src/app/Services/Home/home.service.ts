@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
-import { FreelancersResult } from '../../models/freelancers-result';
 import { ApiResponse } from '../../models/api-response';
 import { environment } from '../../../environment/environment.development';
 
@@ -11,7 +10,6 @@ import { environment } from '../../../environment/environment.development';
 })
 export class HomeService {
   
-  // private baseUrl = 'http://localhost:7165/api/';
   private _http = inject(HttpClient);
 
   paginatedFilteredFreelancers(pageIndex: number = 1, search: string = '', pageSize: number = 12): Observable<ApiResponse> {

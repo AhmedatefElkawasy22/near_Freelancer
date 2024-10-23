@@ -4,6 +4,7 @@ import { RegistrationComponent } from './Components/registration/registration.co
 import { HomeComponent } from './Components/home/home.component';
 import { NotFoundComponent } from './Components/not-found/not-found.component';
 import { LayoutComponent } from './Shared/Layout/layout.component';
+import { CustomerProfileComponent } from './Components/customer-profile/customer-profile.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -12,6 +13,8 @@ export const routes: Routes = [
     children: [
       { path:'', redirectTo: '/home', pathMatch: 'full'},
       { path:'home',component:HomeComponent, pathMatch: 'full'},
+      { path:'customerprofile',component:CustomerProfileComponent, pathMatch: 'full'},
+
     ]
    },
    {path: '**', component: NotFoundComponent}

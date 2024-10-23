@@ -34,7 +34,6 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.UserLoginForm.valid) {
-      //console.log(this.UserLoginForm.value);
       this._loginService.LoginUser(this.UserLoginForm.value).subscribe(
         (data) => {
           this.openSnackBar('wellcome 😊', 'Close');

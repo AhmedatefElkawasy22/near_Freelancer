@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../../models/api-response';
 import { Router } from '@angular/router';
 import {jwtDecode} from 'jwt-decode';
+import { TokenClaims } from '../../models/tokenClaims';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import {jwtDecode} from 'jwt-decode';
 export class LoginService {
   isLoggedin = signal<boolean>(false);
   constructor(private _HttpClient:HttpClient,private router : Router) {
+
     if(this.getUserToken())
       {
         this.isLoggedin.update(()=>true);
@@ -24,7 +26,7 @@ export class LoginService {
       map((response)=>{
         if(response.data.success&&response.data.token)
         {
-          localStorage.setItem('token',response.data.token);
+          localStorage.setItem('token',response.data.token);  
           this.isLoggedin.update(()=>true);
           this.router.navigate(['/home']);
         }
@@ -33,18 +35,30 @@ export class LoginService {
      );
   }
 
-  getTokenClaims(): any {
+  getUserRoles():Observable<ApiResponse>
+  {
+    return this._HttpClient.get<ApiResponse>(`${environment.BaseURL}/api/Account/user-roles`).pipe(
+      map((response)=>{
+        return response;
+      })
+    );
+  }
+
+
+  getTokenClaims(): TokenClaims | null {
     const token = this.getUserToken();
     if (!token) return null;
   
     try {
       const decoded: any = jwtDecode(token);
+      console.log(decoded); 
       const tokenClaims = {
-        id: decoded['id'],
-        name: decoded['name'],
-        email: decoded['email'],
-        roles: decoded['roles']
-      }
+        id: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'], // Update this line
+        name: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+        email: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+        roles: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+      };  
+      console.log('Token claims:', tokenClaims);
       return tokenClaims;
     } catch (error) {
       console.error("Token decoding failed:", error);
@@ -52,7 +66,8 @@ export class LoginService {
     }
   }
   
-  isTokenExpired(): boolean {
+  
+  isTokenValid(): boolean {
     const token = this.getUserToken();
     if (!token) return true; 
   
@@ -60,10 +75,10 @@ export class LoginService {
       const decoded: any = jwtDecode(token); 
       const isTokenExpired = Date.now() >= decoded['exp']! * 1000;     
       if(isTokenExpired) this.logout();
-        return isTokenExpired;
+        return !isTokenExpired;
     } catch (error) {
       console.error("Token decoding failed:", error);
-      return true; 
+      return false; 
     }
   }
 
