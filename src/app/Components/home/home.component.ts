@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { HomeService } from '../../Services/Home/home.service';
-import { FreelancersResult } from '../../models/freelancers-result';
+import { FreelancersResult } from '../../Models/freelancers-result';
 
 @Component({
   selector: 'app-home',

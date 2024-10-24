@@ -8,7 +8,7 @@
             <a class="nav-link px-2 text-white" routerLink="/home" routerLinkActive="router-link-active">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link px-2 text-white" routerLink="/profile" routerLinkActive="router-link-active">Profile</a>
+            <a class="nav-link px-2 text-white" routerLink="/customerprofile" routerLinkActive="router-link-active">Profile</a>
           </li>
           @if(isFreelancer)
           {
@@ -23,7 +23,7 @@
         <ul class="nav mb-2 justify-content-center mb-md-0">
           @if (isLoggedIn) {
           <li class="nav-item">
-            <a class="nav-link px-2 text-white" href="#">
+            <a class="nav-link px-2 text-white" routerLink="/" (click)="LogOut()">
               Logout
             </a>
           </li>

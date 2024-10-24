@@ -13,15 +13,13 @@ export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    children: [
-      { path: '', redirectTo: '/home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent, pathMatch: 'full' },
-      {
-        path: 'customerprofile',
-        component: CustomerProfileComponent,
-        pathMatch: 'full',
-      },
-    ],
+    children: [{ path: '', redirectTo: '/home', pathMatch: 'full' }],
+  },
+  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  {
+    path: 'customerprofile',
+    component: CustomerProfileComponent,
+    title: 'Customer Profile',
   },
   { path: 'login', component: LoginComponent, title: 'Login' },
   { path: 'Login', component: LoginComponent, title: 'Login' },
@@ -41,6 +39,5 @@ export const routes: Routes = [
     component: ResetPasswordComponent,
     title: 'Reset Password',
   },
-  { path: '*', component: NotFoundComponent, title: 'not-found-page' },
   { path: '**', component: NotFoundComponent, title: 'not-found-page' },
 ];

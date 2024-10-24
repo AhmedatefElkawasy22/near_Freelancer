@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
-import { ApiResponse } from '../../models/api-response';
+import { ApiResponse } from '../../Models/api-response';
 import { environment } from '../../../environment/environment.development';
 
 @Injectable({

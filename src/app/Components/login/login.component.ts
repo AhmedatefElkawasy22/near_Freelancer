@@ -38,16 +38,10 @@ export class LoginComponent {
       this._loginService.LoginUser(this.UserLoginForm.value).subscribe(
         (data) => {
           this.openAlertDialog('Success', 'wellcome 😊');
-          // // save token in local storage
-          // console.log("wait token", data);
-          // navigate to Home page
-          setTimeout(() => {
-            this._router.navigateByUrl('/home');
-          }, 3000);
         },
         (error) => {
-          //console.log('res', error);
-          this.openAlertDialog('Error', error.error.message);
+          console.log('res', error);
+          this.openAlertDialog('Error', error);
         }
       );
     } else {
