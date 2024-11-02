@@ -17,7 +17,7 @@ export class CustomerProfileComponent implements OnInit {
   customerProfileInfo: CustomerProfileInformation | null = null;
   requests: CustomerRequestResult[] = [];
   pageIndex: number = 1;
-  pageSize: number = 10;  // Changed pageSize to a more typical value
+  pageSize: number = 10; 
   totalPages: number = 0;
   
   private loginService = inject(LoginService);
@@ -29,7 +29,6 @@ export class CustomerProfileComponent implements OnInit {
       this.userId = claims.id;
       console.log('User ID:', this.userId);
       this.getCustomerInfo();
-      this.getCustomerRequests();
     } else {
       console.error('User is not logged in or token claims are not available.');
     }
@@ -40,6 +39,8 @@ export class CustomerProfileComponent implements OnInit {
       this.customerService.getCustomer(this.userId).subscribe(
         response => {
           this.customerProfileInfo = response.data;
+                this.getCustomerRequests();
+
           console.log('Customer Details:', response);
         },
         error => {
@@ -56,7 +57,7 @@ export class CustomerProfileComponent implements OnInit {
       this.customerService.getCustomerRequests(this.pageIndex, this.pageSize).subscribe(
         response => {
           this.requests = response.data;
-          this.totalPages = this.totalPages;  
+          this.totalPages = response.data.totalPages;  
           console.log('Requests Details:', response);
         },
         error => {

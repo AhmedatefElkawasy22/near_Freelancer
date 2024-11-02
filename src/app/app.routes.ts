@@ -8,6 +8,7 @@ import { CustomerProfileComponent } from './Components/customer-profile/customer
 import { ForgotPasswordComponent } from './Components/forgot-password/forgot-password.component';
 import { EnterOTPComponent } from './Components/enter-otp/enter-otp.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
+import { FreelancerProfileComponent } from './Components/freelancer-profile/freelancer-profile.component';
 
 export const routes: Routes = [
   {
@@ -17,12 +18,11 @@ export const routes: Routes = [
   },
   { path: 'home', component: HomeComponent, pathMatch: 'full' },
   {
-    path: 'customerprofile',
-    component: CustomerProfileComponent,
-    title: 'Customer Profile',
+    path: 'customerprofile',component: CustomerProfileComponent,title: 'Customer Profile',
+  }, {
+    path: 'freelancerprofile',component: FreelancerProfileComponent,title: 'freelancer Profile',
   },
   { path: 'login', component: LoginComponent, title: 'Login' },
-  { path: 'Login', component: LoginComponent, title: 'Login' },
   {
     path: 'registration',
     component: RegistrationComponent,

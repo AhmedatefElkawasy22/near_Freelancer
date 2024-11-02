@@ -2,10 +2,10 @@ import { Injectable, signal } from '@angular/core';
 import { environment } from '../../../environment/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { ApiResponse } from '../../Models/api-response';
+import { ApiResponse } from '../../models/api-response';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { TokenClaims } from '../../Models/tokenClaims';
+import { TokenClaims } from '../../models/tokenClaims';
 
 @Injectable({
   providedIn: 'root',

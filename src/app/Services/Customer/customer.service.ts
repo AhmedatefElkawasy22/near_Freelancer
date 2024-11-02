@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { ApiResponse } from '../../Models/api-response';
+import { ApiResponse } from '../../models/api-response';
 import { environment } from '../../../environment/environment.development';
 
 @Injectable({

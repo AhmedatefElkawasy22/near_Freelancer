@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit ,Injector} from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LoginService } from '../../Services/Login/login-service';
 
@@ -13,12 +13,17 @@ export class HeaderComponent implements OnInit {
   roles: string[] = [];
   isLoggedIn: boolean = false;
   isFreelancer: boolean = false;
-
+  injector = inject(Injector)
   private loginService = inject(LoginService);
 
   ngOnInit(): void {
-    this.isLoggedIn = this.loginService.isTokenValid();
-    this.loadRoles();
+    effect(() => {
+      this.isLoggedIn=this.loginService.isLoggedin();
+    },
+    {
+      injector:this.injector
+    });  
+      this.loadRoles();
   }
 
   loadRoles(): void {
@@ -38,3 +43,6 @@ export class HeaderComponent implements OnInit {
     this.loginService.logout();
   }
 }
+
+
+
