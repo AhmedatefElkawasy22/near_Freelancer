@@ -1,27 +1,32 @@
-import { NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import {
+  FormArray,
   FormControl,
   FormGroup,
-  Validators,
-  ValidatorFn,
-  AbstractControl,
-  ReactiveFormsModule,
   FormsModule,
+  ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { FreelancerService } from '../../Services/Freelancer/freelancer.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
-import { RegisterService } from '../../Services/Register/register-service';
 
 @Component({
-  selector: 'app-registration',
+  selector: 'app-add-freelancer-business',
   standalone: true,
-  imports: [RouterLink, NgIf, ReactiveFormsModule, NgFor, FormsModule],
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.css'],
+  imports: [
+    NgIf,
+    NgFor,
+    NgClass,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  templateUrl: './add-freelancer-business.component.html',
+  styleUrl: './add-freelancer-business.component.css',
 })
-export class RegistrationComponent {
+export class AddFreelancerBusinessComponent {
   countryCodes = [
     { name: 'United States', code: '+1' },
     { name: 'United Kingdom', code: '+44' },
@@ -129,115 +134,116 @@ export class RegistrationComponent {
     { name: 'Chad', code: '+235' },
     { name: 'Somalia', code: '+252' },
   ];
-  UserRegisterForm: FormGroup;
-  codeOfCountry: string = '';
+  codeOfCountry!: string;
+  addFreelancerBusiness!: FormGroup;
+  private _freelancerService = inject(FreelancerService);
+  private _MatDialog = inject(MatDialog);
+  private _router = inject(Router);
 
-  constructor(
-    private _registerService: RegisterService,
-    private _router: Router,
-    private dialog: MatDialog
-  ) {
-    this.UserRegisterForm = new FormGroup(
-      {
-        name: new FormControl('', [
+  constructor() {
+    this.addFreelancerBusiness = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9 ]{5,50}$'),
+        Validators.minLength(5),
+        Validators.maxLength(50),
+      ]),
+      description: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z ]{5,300}$'),
+        Validators.minLength(5),
+        Validators.maxLength(300),
+      ]),
+      phoneNumber: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^\\+?[0-9]{10,15}$'),
+      ]),
+      profession: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z ]{5,50}$'),
+        Validators.minLength(5),
+        Validators.maxLength(50),
+      ]),
+      street: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9\\s.,-]{5,50}$'),
+        Validators.minLength(5),
+        Validators.maxLength(50),
+      ]),
+      city: new FormControl('', [
+        Validators.required,
+        Validators.pattern("^[a-zA-Z\\s'-]{2,50}$"),
+        Validators.minLength(5),
+        Validators.maxLength(50),
+      ]),
+
+      state: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z\\s]{2,40}$'),
+        Validators.minLength(5),
+        Validators.maxLength(50),
+      ]),
+
+      skills: new FormArray([
+        new FormControl('', [
           Validators.required,
-          Validators.pattern('^[a-zA-Z0-9]{3,50}$'),
-          Validators.minLength(5),
+          Validators.pattern('^[a-zA-Z0-9\\s]{3,50}$'),
+          Validators.minLength(3),
           Validators.maxLength(50),
         ]),
-        phoneNumber: new FormControl('', [
-          Validators.required,
-          Validators.pattern('^\\+?[0-9]{10,15}$'),
-        ]),
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [
-          Validators.required,
-          Validators.minLength(8), // Minimum length of 8 characters
-          Validators.pattern(
-            '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-={}|\\[\\]:";\'<>?,./]).{8,}$'
-          ),
-        ]),
-        confirmPassword: new FormControl('', [Validators.required]),
-        street: new FormControl('', [
-          Validators.required,
-          Validators.maxLength(100),
-        ]),
-        city: new FormControl('', [
-          Validators.required,
-          Validators.maxLength(50),
-        ]),
-        state: new FormControl('', [
-          Validators.required,
-          Validators.maxLength(50),
-        ]),
-        gender: new FormControl<number | null>(null, [Validators.required]),
-        dob: new FormControl('', [Validators.required]),
-      },
-      { validators: this.passwordMatchValidator }
-    );
+      ]),
+    });
   }
 
-  //ensure password and confirmPassword match
-  passwordMatchValidator: ValidatorFn = (
-    control: AbstractControl
-  ): { [key: string]: boolean } | null => {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('confirmPassword')?.value;
-
-    return password && confirmPassword && password !== confirmPassword
-      ? { passwordMismatch: true }
-      : null;
-  };
+  get skills() {
+    return this.addFreelancerBusiness.get('skills') as FormArray;
+  }
+  addskill() {
+    this.skills.push(
+      new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9\\s]{3,50}$'),
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ])
+    );
+  }
+  removeskill(i: number) {
+    this.skills.removeAt(i);
+  }
 
   onSubmit() {
-    if (this.UserRegisterForm.valid) {
-      const phoneNumber = this.UserRegisterForm.get('phoneNumber')?.value;
-      const modifiedPhoneNumber = phoneNumber
-        ? this.codeOfCountry + phoneNumber
-        : '';
-      const originalPhoneNumber = phoneNumber;
-
-      this.UserRegisterForm.get('phoneNumber')?.setValue(modifiedPhoneNumber);
-
-      const GenderNumber = Number(this.UserRegisterForm.get('gender')?.value);
-      this.UserRegisterForm.get('gender')?.setValue(GenderNumber);
-      //console.log("data as json", this.UserRegisterForm.value)
-
-      this._registerService.registerUser(this.UserRegisterForm.value).subscribe(
-        (response) => {
-          //console.log('User registered successfully:', response );
-          this.openAlertDialog(
-            'Success',
-            `${response.message} , please confirm your email `
-          );
-          setTimeout(() => {
-            this._router.navigateByUrl('/login');
-          }, 5000);
-          // Reset the phone number back to the original value
-          this.UserRegisterForm.get('phoneNumber')?.setValue(
-            originalPhoneNumber
-          );
-        },
-        (error) => {
-          //console.error('Registration failed:', error);
-          this.openAlertDialog(
-            'Error',
-            'Registration failed: ' +
-              (error?.error?.title || error?.error?.message)
-          );
-          // Reset the phone number back to the original value
-          this.UserRegisterForm.get('phoneNumber')?.setValue(
-            originalPhoneNumber
-          );
-        }
-      );
-    } else {
-      this.openAlertDialog('Error', 'Please fill in the data correctly.');
+    if (this.addFreelancerBusiness.valid) {
+      // add code to phoneNumber
+      const phoneNumber = this.addFreelancerBusiness.get('phoneNumber')?.value;
+      console.log('code', this.codeOfCountry);
+      this.addFreelancerBusiness
+        .get('phoneNumber')
+        ?.setValue(this.codeOfCountry + phoneNumber);
+      //  console.log(this.addFreelancerBusiness)
+      this._freelancerService
+        .addFreelancerBusiness(this.addFreelancerBusiness.value)
+        .subscribe({
+          next: (response) => {
+            console.log('API response:', response);
+            this.openAlertDialog(
+              'succsses',
+              'your Business has been add successfuly'
+            );
+            setTimeout(() => {
+              this._router.navigateByUrl('/home');
+            }, 3000);
+          },
+          error: (err) => {
+            // console.error('Error occurred in API call:', err);
+            this.openAlertDialog('Error', err);
+          },
+        });
     }
   }
 
   openAlertDialog(title: string, message: string) {
-    this.dialog.open(AlertDialogComponent, {
+    this._MatDialog.open(AlertDialogComponent, {
       data: { title: title, message: message },
     });
   }

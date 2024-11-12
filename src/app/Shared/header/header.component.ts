@@ -1,5 +1,5 @@
 import { Component, effect, inject, OnInit ,Injector} from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LoginService } from '../../Services/Login/login-service';
 
 @Component({
@@ -14,11 +14,12 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
   isFreelancer: boolean = false;
   injector = inject(Injector)
+  private _router = inject(Router)
   private loginService = inject(LoginService);
 
   ngOnInit(): void {
     effect(() => {
-      this.isLoggedIn=this.loginService.isLoggedin();
+      this.isLoggedIn = this.loginService.isLoggedin();
     },
     {
       injector:this.injector
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnInit {
 
   LogOut() {
     this.loginService.logout();
+    this._router.navigate(['/login']);
   }
 }
 

@@ -33,7 +33,15 @@ export class AccountService {
       {responseType:'text'}
     );
   }
-
+   
+   
+  
+SendServiceRequest(body: any): Observable < any > {
+    return this._HttpClient.post(
+      `${environment.BaseURL}/api/Account/send-service-request`, body,
+      {responseType: 'text'}
+    );
+  }
 
 
 }

@@ -4,6 +4,11 @@ import { CustomerService } from '../../Services/Customer/customer.service';
 import { CustomerProfileInformation } from '../../models/customer-profile-information';
 import { CustomerRequestResult } from '../../models/customer-request-result';
 import { CommonModule } from '@angular/common';
+import { FreelancerService } from '../../Services/Freelancer/freelancer.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-profile',
@@ -22,6 +27,9 @@ export class CustomerProfileComponent implements OnInit {
   
   private loginService = inject(LoginService);
   private customerService = inject(CustomerService);
+  private _freelancerService = inject(FreelancerService);
+  private dialog = inject(MatDialog);
+  private _router = inject(Router);
 
   ngOnInit() {
     const claims = this.loginService.getTokenClaims();
@@ -74,5 +82,42 @@ export class CustomerProfileComponent implements OnInit {
       this.pageIndex = newPageIndex;
       this.getCustomerRequests();
     }
+  }
+
+
+  DeleteFreelancerBusiness() {
+    console.log('Delete Freelancer Business');
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirm Deletion',
+        message: 'Are you sure you want to delete your business? This action cannot be undone.'
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._freelancerService.deleteFreelancerBusiness().subscribe({
+          next: (response) => {
+            console.log("Business deleted successfully:", response);
+            this.openAlertDialog('Success', 'Your business has been deleted successfully');
+            setTimeout(() => {
+              this._router.navigateByUrl('/home');
+            }, 3000);
+          },
+          error: (err) => {
+            console.error("Error occurred during deletion:", err);
+            this.openAlertDialog('Error', 'Failed to delete your business');
+          }
+        });
+      } else {
+        // console.log("Deletion canceled by the user.");
+      }
+    });
+  }
+
+  openAlertDialog(title: string, message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      data: { title: title, message: message },
+    });
   }
 }
