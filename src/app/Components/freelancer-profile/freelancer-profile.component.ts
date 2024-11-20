@@ -6,11 +6,14 @@ import { CommonModule } from '@angular/common';
 import { FreelancerRequestResult } from '../../models/freelancer-request-result';
 import { OfferedServiceResult } from '../../models/offered-service-result';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-freelancer-profile',
   standalone: true,
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatMenuModule, MatCheckboxModule, MatCardModule],
   templateUrl: './freelancer-profile.component.html',
   styleUrls: ['./freelancer-profile.component.css']
 })
@@ -20,33 +23,36 @@ export class FreelancerProfileComponent {
   requests: FreelancerRequestResult[] = [];
   offeredServices: OfferedServiceResult[] = [];
   pageIndex: number = 1;
-  pageSize: number = 10; 
+  pageSize: number = 10;
   totalPages: number = 0;
   
   servicesPageIndex: number = 1;
-  servicesPageSize: number = 6; 
+  servicesPageSize: number = 6;
   servicesTotalPages: number = 0;
-  
+
   private loginService = inject(LoginService);
   private freelancerService = inject(FreelancerService);
   
   isLoggedIn: boolean = false;
 
-  constructor() {
+  freelancerId: string | null = null; 
+
+  constructor(private route: ActivatedRoute) {
     this.isLoggedIn = this.loginService.isLoggedin();
   }
 
-  ngOnInit() {
-    if (this.isLoggedIn) {
-      this.getFreelancerInfo();
-    } else {
-      console.error('User is not logged in or token claims are not available.');
-    }
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.freelancerId = params.get('freelancerId');
+      if ( this.freelancerId) {
+        this.getFreelancerInfo(this.freelancerId);
+      } else {
+      this.getFreelancerInfo();      }
+    });
   }
 
-  getFreelancerInfo() {
-    if (this.isLoggedIn) {
-      this.freelancerService.getFreelancer().subscribe(
+  getFreelancerInfo(freelancerId?: string): void {
+      this.freelancerService.getFreelancer(freelancerId).subscribe(
         response => {
           this.freelancerProfileInfo = response.data;
 
@@ -62,9 +68,7 @@ export class FreelancerProfileComponent {
           console.error('Error fetching freelancer details:', error);
         }
       );
-    } else {
-      console.error('User ID is not available.');
-    }
+   
   }
 
   getFreelancerRequests() {
@@ -99,6 +103,35 @@ export class FreelancerProfileComponent {
       console.error('User not found.');
     }
   }
+
+  acceptRequest(requestId:string)
+  {
+    this.freelancerService.acceptRequest(requestId).subscribe(
+      response=>{
+
+      },
+      error=>{
+         console.error('Error accepting request',error)
+      }
+
+    )
+  }
+
+
+
+  refuseRequest(requestId:string)
+  {
+    this.freelancerService.refuseRequest(requestId).subscribe(
+      response=>{
+
+      },
+      error=>{
+         console.error('Error refusing request',error)
+      }
+
+    )
+  }
+
 
 
   onServicePageChange(newPageIndex: number): void {

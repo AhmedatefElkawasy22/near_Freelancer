@@ -7,9 +7,11 @@
           <li class="nav-item">
             <a class="nav-link px-2 text-white" routerLink="/home" routerLinkActive="router-link-active">Home</a>
           </li>
+          @if (isLoggedIn) {
+
           <li class="nav-item">
             <a class="nav-link px-2 text-white" routerLink="/customerprofile" routerLinkActive="router-link-active">Profile</a>
-          </li>
+          </li>}
           @if(isFreelancer)
           {
             <li class="nav-item">

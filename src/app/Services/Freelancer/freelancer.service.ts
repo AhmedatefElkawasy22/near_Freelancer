@@ -13,9 +13,12 @@ export class FreelancerService {
   private _http = inject(HttpClient);
 
 
-  getFreelancer():Observable<ApiResponse>{
-    return this._http.get<ApiResponse>(`${environment.BaseURL}/api/Freelancer/freelancer-profile`,{ })
-    .pipe(
+  getFreelancer(freelancerId?: string): Observable<ApiResponse> {
+    const url = freelancerId
+      ? `${environment.BaseURL}/api/Freelancer/get-freelancer-by-id/${freelancerId}`
+      : `${environment.BaseURL}/api/Freelancer/freelancer-profile`;
+  
+    return this._http.get<ApiResponse>(url).pipe(
       catchError(error => {
         console.error('Error occurred in API call:', error);
         const errorMessage = error.status === 0
@@ -23,8 +26,9 @@ export class FreelancerService {
           : `Error Code: ${error.status}, Message: ${error.message}`;
         return throwError(() => new Error(errorMessage));
       })
-    );}
-
+    );
+  }
+  
     getFreelancerRequests(pageIndex: number = 1, pageSize: number = 12): Observable<ApiResponse> {
       let params = new HttpParams()
         .set('pageIndex', pageIndex.toString())
@@ -59,4 +63,30 @@ export class FreelancerService {
       })
     );}
   
+
+    acceptRequest(requestId:string)
+    {
+     return this._http.post<ApiResponse>(`${environment.BaseURL}/api/Freelancer/accept/${requestId}`,{})
+     .pipe(
+      catchError(error => {
+        console.error('Error occurred in API call:', error);
+        const errorMessage = error.status === 0
+          ? 'Cannot connect to backend server. Please ensure the server is running.'
+          : `Error Code: ${error.status}, Message: ${error.message}`;
+        return throwError(() => new Error(errorMessage));
+      })
+    );}
+
+    refuseRequest(requestId:string)
+    {
+     return this._http.post<ApiResponse>(`${environment.BaseURL}/api/Freelancer/accept/${requestId}`,{})
+     .pipe(
+      catchError(error => {
+        console.error('Error occurred in API call:', error);
+        const errorMessage = error.status === 0
+          ? 'Cannot connect to backend server. Please ensure the server is running.'
+          : `Error Code: ${error.status}, Message: ${error.message}`;
+        return throwError(() => new Error(errorMessage));
+      })
+    );}
   }

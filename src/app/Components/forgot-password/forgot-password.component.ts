@@ -24,7 +24,6 @@ export class ForgotPasswordComponent {
   ) {}
 
   onSubmit() {
-    // console.log(this.email);
     if (this.email.length > 0) {
       this._AccountService.ForgetPassword(this.email).subscribe(
         response => {
@@ -35,7 +34,6 @@ export class ForgotPasswordComponent {
           }, 5000);
         },
         error => {
-          //console.error("errorrrrrrr",error);
           this.openAlertDialog('Error', `${error.error.message || error.error}`);
         }
       );
@@ -44,7 +42,6 @@ export class ForgotPasswordComponent {
     }
   }
 
-  // Method to open the alert dialog
   openAlertDialog(title: string, message: string) {
     this.dialog.open(AlertDialogComponent, {
       data: { title: title, message: message },

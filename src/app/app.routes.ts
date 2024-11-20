@@ -11,33 +11,44 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
 import { FreelancerProfileComponent } from './Components/freelancer-profile/freelancer-profile.component';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent, title: 'Login' },
+  { path: 'registration', component: RegistrationComponent, title: 'Registration' },
+
   {
     path: '',
     component: LayoutComponent,
-    children: [{ path: '', redirectTo: '/home', pathMatch: 'full' }],
+    children: [
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent, pathMatch: 'full' },
+      {
+        path: 'customerprofile',
+        component: CustomerProfileComponent,
+        title: 'Customer Profile',
+      },
+      {
+        path: 'freelancerprofile/:freelancerId',
+        component: FreelancerProfileComponent,
+        title: 'Freelancer Profile',
+      },
+      {
+        path: 'freelancerprofile',
+        component: FreelancerProfileComponent,
+        title: 'Freelancer Profile',
+      },
+      
+      {
+        path: 'forgotPassword',
+        component: ForgotPasswordComponent,
+        title: 'Forgot Password',
+      },
+      { path: 'enterOTP', component: EnterOTPComponent, title: 'Enter OTP' },
+      {
+        path: 'resetPassword',
+        component: ResetPasswordComponent,
+        title: 'Reset Password',
+      },
+    ],
   },
-  { path: 'home', component: HomeComponent, pathMatch: 'full' },
-  {
-    path: 'customerprofile',component: CustomerProfileComponent,title: 'Customer Profile',
-  }, {
-    path: 'freelancerprofile',component: FreelancerProfileComponent,title: 'freelancer Profile',
-  },
-  { path: 'login', component: LoginComponent, title: 'Login' },
-  {
-    path: 'registration',
-    component: RegistrationComponent,
-    title: 'Registration',
-  },
-  {
-    path: 'ForgotPassword',
-    component: ForgotPasswordComponent,
-    title: 'Forgot Password',
-  },
-  { path: 'EnterOTP', component: EnterOTPComponent, title: 'Enter OTP' },
-  {
-    path: 'ResetPassword',
-    component: ResetPasswordComponent,
-    title: 'Reset Password',
-  },
+
   { path: '**', component: NotFoundComponent, title: 'not-found-page' },
 ];

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
@@ -15,7 +15,7 @@ import { LoginService } from '../../Services/Login/login-service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, FormsModule, NgIf],
+  imports: [RouterLink, ReactiveFormsModule, FormsModule, NgIf,CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
