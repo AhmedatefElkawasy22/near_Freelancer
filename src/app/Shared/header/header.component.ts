@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     effect(() => {
-      this.isLoggedIn=this.loginService.isLoggedin();
+      this.isLoggedIn = this.loginService.isLoggedin();
     },
     {
       injector:this.injector
@@ -47,5 +47,6 @@ export class HeaderComponent implements OnInit {
 
   LogOut(): void {
     this.loginService.logout();
+    this._router.navigate(['/login']);
   }
 }

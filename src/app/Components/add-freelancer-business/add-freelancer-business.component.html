@@ -1,0 +1,289 @@
+<div class="body">
+  <div
+    class="container d-flex justify-content-center align-items-center min-vh-100"
+  >
+    <form
+      [formGroup]="addFreelancerBusiness"
+      (ngSubmit)="onSubmit()"
+      class="p-5 form-container shadow bg-light rounded"
+    >
+      <h2 class="text-center mb-4">Add Freelancer Business</h2>
+
+      <!-- Name Field -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input
+          id="name"
+          formControlName="name"
+          class="form-control"
+          placeholder="Enter name"
+        />
+        <div
+          *ngIf="
+            addFreelancerBusiness.get('name')?.invalid &&
+            addFreelancerBusiness.get('name')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small *ngIf="addFreelancerBusiness.get('name')?.errors?.['required']"
+            >Name is required.</small
+          >
+          <small *ngIf="addFreelancerBusiness.get('name')?.errors?.['pattern']"
+            >Name can contain only letters and numbers.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('name')?.errors?.['minlength']"
+            >Minimum 5 characters required.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('name')?.errors?.['maxlength']"
+            >You have exceeded the character limit.</small
+          >
+        </div>
+      </div>
+
+      <!-- Description Field -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control"
+          placeholder="Enter business description"
+        ></textarea>
+        <div
+          *ngIf="
+            addFreelancerBusiness.get('description')?.invalid &&
+            addFreelancerBusiness.get('description')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small
+            *ngIf="addFreelancerBusiness.get('description')?.errors?.['required']"
+            >Description is required.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('description')?.errors?.['pattern']"
+            >Description can contain only letters.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('description')?.errors?.['maxlength']"
+            >You have exceeded the character limit.</small
+          >
+        </div>
+      </div>
+
+      <!-- Profession Field -->
+      <div class="mb-3">
+        <label for="profession" class="form-label">Profession</label>
+        <input
+          id="profession"
+          formControlName="profession"
+          class="form-control"
+          placeholder="Enter profession"
+        />
+        <div
+          *ngIf="
+            addFreelancerBusiness.get('profession')?.invalid &&
+            addFreelancerBusiness.get('profession')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small
+            *ngIf="addFreelancerBusiness.get('profession')?.errors?.['required']"
+            >Profession is required.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('profession')?.errors?.['pattern']"
+            >Profession can contain only letters.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('description')?.errors?.['maxlength']"
+            >You have exceeded the character limit.</small
+          >
+        </div>
+      </div>
+
+      <!-- Phone Number with Country Code -->
+      <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <div class="input-group">
+          <select
+            [(ngModel)]="codeOfCountry"
+            [ngModelOptions]="{ standalone: true }"
+            class="form-select"
+            style="max-width: 200px"
+          >
+            <option *ngFor="let country of countryCodes" [value]="country.code">
+              {{ country.name }} ({{ country.code }})
+            </option>
+          </select>
+          <input
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            class="form-control"
+            placeholder="Enter phone number"
+          />
+        </div>
+        <div
+          *ngIf="
+            addFreelancerBusiness.get('phoneNumber')?.invalid &&
+            addFreelancerBusiness.get('phoneNumber')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small
+            *ngIf="addFreelancerBusiness.get('phoneNumber')?.errors?.['required']"
+            >Phone number is required.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('phoneNumber')?.errors?.['pattern']"
+            >Invalid phone number format.</small
+          >
+        </div>
+      </div>
+
+      <!-- Street Field -->
+      <div class="mb-3">
+        <label for="street" class="form-label">Street</label>
+        <input
+          id="street"
+          formControlName="street"
+          class="form-control"
+          placeholder="Enter street"
+        />
+        <div
+          *ngIf="
+            addFreelancerBusiness.get('street')?.invalid &&
+            addFreelancerBusiness.get('street')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small
+            *ngIf="addFreelancerBusiness.get('street')?.errors?.['required']"
+            >Street is required.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('street')?.errors?.['pattern']"
+            >Street can contain letters, numbers, spaces, commas, periods, and
+            hyphens.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('street')?.errors?.['maxlength']"
+            >You have exceeded the character limit.</small
+          >
+        </div>
+      </div>
+
+      <!-- City Field -->
+      <div class="mb-3">
+        <label for="city" class="form-label">City</label>
+        <input
+          id="city"
+          formControlName="city"
+          class="form-control"
+          placeholder="Enter city"
+        />
+        <div
+          *ngIf="
+            addFreelancerBusiness.get('city')?.invalid &&
+            addFreelancerBusiness.get('city')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small *ngIf="addFreelancerBusiness.get('city')?.errors?.['required']"
+            >City is required.</small
+          >
+          <small *ngIf="addFreelancerBusiness.get('city')?.errors?.['pattern']"
+            >City can contain letters, spaces, apostrophes, and hyphens.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('city')?.errors?.['maxlength']"
+            >You have exceeded the character limit.</small
+          >
+        </div>
+      </div>
+
+      <!-- State Field -->
+      <div class="mb-3">
+        <label for="state" class="form-label">State</label>
+        <input
+          id="state"
+          formControlName="state"
+          class="form-control"
+          placeholder="Enter state"
+        />
+        <div
+          *ngIf="
+            addFreelancerBusiness.get('state')?.invalid &&
+            addFreelancerBusiness.get('state')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small
+            *ngIf="addFreelancerBusiness.get('state')?.errors?.['required']"
+            >State is required.</small
+          >
+          <small *ngIf="addFreelancerBusiness.get('state')?.errors?.['pattern']"
+            >State can contain letters and spaces only.</small
+          >
+          <small
+            *ngIf="addFreelancerBusiness.get('state')?.errors?.['maxlength']"
+            >You have exceeded the character limit.</small
+          >
+        </div>
+      </div>
+
+      <!-- Skills Field -->
+      <div class="mb-3">
+        <label class="form-label">Skills</label>
+        <div formArrayName="skills">
+          <div
+            *ngFor="let skill of skills.controls; let i = index"
+            class="d-flex mb-2"
+          >
+            <input
+              [formControlName]="i"
+              class="form-control me-2"
+              placeholder="Enter skill"
+            />
+
+            <div
+              *ngIf="skill.invalid && skill.touched"
+              class="text-danger mt-1"
+            >
+              <small *ngIf="skill.errors?.['required']"
+                >Skill is required.</small
+              >
+              <small *ngIf="skill.errors?.['pattern']"
+                >Skill can only contain letters, numbers, and spaces.</small
+              >
+              <small *ngIf="skill.errors?.['minlength']"
+                >Skill must be at least 5 characters long.</small
+              >
+              <small *ngIf="skill.errors?.['maxlength']"
+                >You have exceeded the character limit.</small
+              >
+            </div>
+
+            <button (click)="removeskill(i)" class="ui-btn">Remove</button>
+          </div>
+
+          <button class="icon-btn add-btn" (click)="addskill()">
+            <div class="add-icon"></div>
+            <div class="btn-txt">Add skill</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="!addFreelancerBusiness.valid"
+        class="btn btn-success w-100 mt-3 submit-btn"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

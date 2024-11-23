@@ -1,17 +1,19 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiResponse } from '../../models/api-response';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { environment } from '../../../environment/environment.development';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from '../../Components/alert-dialog/alert-dialog.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FreelancerService {
-
-
   private _http = inject(HttpClient);
-
+  private _router = inject(Router);
+  private _MatDialog = inject(MatDialog);
 
   getFreelancer(freelancerId?: string): Observable<ApiResponse> {
     const url = freelancerId
@@ -37,14 +39,16 @@ export class FreelancerService {
     .pipe(
       tap(response => console.log('API response:', response)),
 
-      catchError(error => {
-        console.error('Error occurred in API call:', error);
-        const errorMessage = error.status === 0
-          ? 'Cannot connect to backend server. Please ensure the server is running.'
-          : `Error Code: ${error.status}, Message: ${error.message}`;
-        return throwError(() => new Error(errorMessage));
-      })
-    );}
+        catchError((error) => {
+          console.error('Error occurred in API call:', error);
+          const errorMessage =
+            error.status === 0
+              ? 'Cannot connect to backend server. Please ensure the server is running.'
+              : `Error Code: ${error.status}, Message: ${error.message}`;
+          return throwError(() => new Error(errorMessage));
+        })
+      );
+  }
 
     
     getFreelancerOfferedServices(freelancerId:string,pageIndex: number = 1, pageSize: number = 6): Observable<ApiResponse> {

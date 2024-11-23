@@ -9,6 +9,8 @@ import { ForgotPasswordComponent } from './Components/forgot-password/forgot-pas
 import { EnterOTPComponent } from './Components/enter-otp/enter-otp.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 import { FreelancerProfileComponent } from './Components/freelancer-profile/freelancer-profile.component';
+import { AddFreelancerBusinessComponent } from './Components/add-freelancer-business/add-freelancer-business.component';
+import { SendServiceRequestComponent } from './Components/send-service-request/send-service-request.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Login' },

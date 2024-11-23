@@ -40,8 +40,9 @@ export class LoginComponent {
           this.openAlertDialog('Success', 'wellcome 😊');
         },
         (error) => {
-          console.log('res', error);
+          //  console.log('res', error);
           this.openAlertDialog('Error', error);
+          this._router.navigate(['/login']);
         }
       );
     } else {
