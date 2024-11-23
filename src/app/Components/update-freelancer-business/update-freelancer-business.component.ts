@@ -1,5 +1,5 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import {
   FormArray,
   FormControl,
@@ -10,22 +10,17 @@ import {
 } from '@angular/forms';
 import { FreelancerService } from '../../Services/Freelancer/freelancer.service';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
-  selector: 'app-add-freelancer-business',
+  selector: 'app-update-freelancer-business',
   standalone: true,
-  imports: [
-    NgIf,
-    NgFor,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './add-freelancer-business.component.html',
-  styleUrl: './add-freelancer-business.component.css',
+  imports: [NgIf, NgFor, CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './update-freelancer-business.component.html',
+  styleUrl: './update-freelancer-business.component.css',
 })
-export class AddFreelancerBusinessComponent {
+export class UpdateFreelancerBusinessComponent {
   countryCodes = [
     { name: 'United States', code: '+1' },
     { name: 'United Kingdom', code: '+44' },
@@ -133,14 +128,15 @@ export class AddFreelancerBusinessComponent {
     { name: 'Chad', code: '+235' },
     { name: 'Somalia', code: '+252' },
   ];
+
   codeOfCountry!: string;
-  addFreelancerBusiness!: FormGroup;
+  updateFreelancerBusiness!: FormGroup;
   private _freelancerService = inject(FreelancerService);
   private _MatDialog = inject(MatDialog);
   private _router = inject(Router);
 
   constructor() {
-    this.addFreelancerBusiness = new FormGroup({
+    this.updateFreelancerBusiness = new FormGroup({
       name: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9 ]{5,50}$'),
@@ -153,10 +149,10 @@ export class AddFreelancerBusinessComponent {
         Validators.minLength(5),
         Validators.maxLength(300),
       ]),
-      phoneNumber: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^\\+?[0-9]{10,15}$'),
-      ]),
+      // phoneNumber: new FormControl('', [
+      //   Validators.required,
+      //   Validators.pattern('^\\+?[0-9]{10,15}$'),
+      // ]),
       profession: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z ]{5,50}$'),
@@ -175,28 +171,57 @@ export class AddFreelancerBusinessComponent {
         Validators.minLength(5),
         Validators.maxLength(50),
       ]),
-
       state: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z\\s]{2,40}$'),
         Validators.minLength(5),
         Validators.maxLength(50),
       ]),
+      skills: new FormArray([]),
+    });
 
-      skills: new FormArray([
-        new FormControl('', [
-          Validators.required,
-          Validators.pattern('^[a-zA-Z0-9\\s]{3,50}$'),
-          Validators.minLength(3),
-          Validators.maxLength(50),
-        ]),
-      ]),
+    // Call the API to get data
+    this._freelancerService.getfreelancerBusiness().subscribe({
+      next: (response) => {
+        // console.log('ok', response);
+        this.updateFreelancerBusiness.patchValue({
+          name: response.data.name,
+          description: response.data.description,
+          phoneNumber: response.data.phoneNumber,
+          profession: response.data.profession,
+          street: response.data.street,
+          city: response.data.city,
+          state: response.data.state,
+        });
+        const skillsArray = this.updateFreelancerBusiness.get(
+          'skills'
+        ) as FormArray;
+        skillsArray.clear();
+        response.data.skills.forEach((skill: string) => {
+          skillsArray.push(
+            new FormControl(skill, [
+              Validators.required,
+              Validators.pattern('^[a-zA-Z0-9\\s]{3,50}$'),
+              Validators.minLength(3),
+              Validators.maxLength(50),
+            ])
+          );
+        });
+      },
+      error: (error) => {
+        // console.log("error",error)
+        this._router.navigateByUrl('/home');
+        // this.openAlertDialog('Error', error);
+        // setTimeout(() => {
+        // }, 3000);
+      },
     });
   }
 
   get skills() {
-    return this.addFreelancerBusiness.get('skills') as FormArray;
+    return this.updateFreelancerBusiness.get('skills') as FormArray;
   }
+
   addskill() {
     this.skills.push(
       new FormControl('', [
@@ -212,16 +237,16 @@ export class AddFreelancerBusinessComponent {
   }
 
   onSubmit() {
-    if (this.addFreelancerBusiness.valid) {
+    if (this.updateFreelancerBusiness.valid) {
       // add code to phoneNumber
-      const phoneNumber = this.addFreelancerBusiness.get('phoneNumber')?.value;
+      const phoneNumber = this.updateFreelancerBusiness.get('phoneNumber')?.value;
       console.log('code', this.codeOfCountry);
-      this.addFreelancerBusiness
+      this.updateFreelancerBusiness
         .get('phoneNumber')
         ?.setValue(this.codeOfCountry + phoneNumber);
-      //  console.log(this.addFreelancerBusiness)
+      //  console.log(this.updateFreelancerBusiness)
       this._freelancerService
-        .addFreelancerBusiness(this.addFreelancerBusiness.value)
+        .updateFreelancerBusiness(this.updateFreelancerBusiness.value)
         .subscribe({
           next: (response) => {
             console.log('API response:', response);
@@ -236,6 +261,9 @@ export class AddFreelancerBusinessComponent {
           error: (err) => {
             // console.error('Error occurred in API call:', err);
             this.openAlertDialog('Error', err);
+            setTimeout(() => {
+              this._router.navigateByUrl('/home');
+            }, 3000)
           },
         });
     }

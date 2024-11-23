@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./customer-profile.component.css']
 })
 export class CustomerProfileComponent implements OnInit {
+
   userId: string | null = null;
   customerProfileInfo: CustomerProfileInformation | null = null;
   requests: CustomerRequestResult[] = [];
@@ -27,9 +28,7 @@ export class CustomerProfileComponent implements OnInit {
   
   private loginService = inject(LoginService);
   private customerService = inject(CustomerService);
-  private _freelancerService = inject(FreelancerService);
-  private dialog = inject(MatDialog);
-  private _router = inject(Router);
+
 
   ngOnInit() {
     const claims = this.loginService.getTokenClaims();
@@ -85,39 +84,5 @@ export class CustomerProfileComponent implements OnInit {
   }
 
 
-  DeleteFreelancerBusiness() {
-    console.log('Delete Freelancer Business');
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: {
-        title: 'Confirm Deletion',
-        message: 'Are you sure you want to delete your business? This action cannot be undone.'
-      }
-    });
   
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this._freelancerService.deleteFreelancerBusiness().subscribe({
-          next: (response) => {
-            console.log("Business deleted successfully:", response);
-            this.openAlertDialog('Success', 'Your business has been deleted successfully');
-            setTimeout(() => {
-              this._router.navigateByUrl('/home');
-            }, 3000);
-          },
-          error: (err) => {
-            console.error("Error occurred during deletion:", err);
-            this.openAlertDialog('Error', 'Failed to delete your business');
-          }
-        });
-      } else {
-        // console.log("Deletion canceled by the user.");
-      }
-    });
-  }
-
-  openAlertDialog(title: string, message: string) {
-    this.dialog.open(AlertDialogComponent, {
-      data: { title: title, message: message },
-    });
-  }
 }

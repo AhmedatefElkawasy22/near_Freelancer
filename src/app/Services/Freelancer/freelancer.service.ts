@@ -92,10 +92,19 @@ export class FreelancerService {
   deleteFreelancerBusiness(): Observable<any> {
     return this._http.delete<any>(`${environment.BaseURL}/api/Freelancer/delete-freelancer-business`)
   }
+  
+  getfreelancerBusiness(): Observable<any> {
+    return this._http.get<any>(`${environment.BaseURL}/api/Freelancer/freelancer-profile`)
+  }
 
-  openAlertDialog(title: string, message: string) {
+  updateFreelancerBusiness(data:any): Observable<any>{
+    return this._http.put<any>(`${environment.BaseURL}/api/Freelancer/update-freelancer-business`, data)
+  }
+
+  openAlertDialog(title: string, message: string){
     this._MatDialog.open(AlertDialogComponent, {
       data: { title: title, message: message },
     });
   }
+  
 }

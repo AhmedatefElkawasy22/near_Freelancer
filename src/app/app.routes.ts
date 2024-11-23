@@ -11,6 +11,7 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
 import { FreelancerProfileComponent } from './Components/freelancer-profile/freelancer-profile.component';
 import { AddFreelancerBusinessComponent } from './Components/add-freelancer-business/add-freelancer-business.component';
 import { SendServiceRequestComponent } from './Components/send-service-request/send-service-request.component';
+import { UpdateFreelancerBusinessComponent } from './Components/update-freelancer-business/update-freelancer-business.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +43,7 @@ export const routes: Routes = [
     title: 'Reset Password',
   },
   {path:'addFreelancerBusiness', component: AddFreelancerBusinessComponent , title:"Add Freelancer Business"},
+  {path:'updateFreelancerBusiness', component: UpdateFreelancerBusinessComponent , title:"update Freelancer Business"},
   {path:'SendServiceRequest', component: SendServiceRequestComponent , title:"Send Service Request"},
   { path: '**', component: NotFoundComponent, title: 'not-found-page' },
 ];

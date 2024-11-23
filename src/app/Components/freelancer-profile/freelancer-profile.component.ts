@@ -6,6 +6,10 @@ import { CommonModule } from '@angular/common';
 import { FreelancerRequestResult } from '../../models/freelancer-request-result';
 import { OfferedServiceResult } from '../../models/offered-service-result';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-freelancer-profile',
@@ -14,7 +18,8 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './freelancer-profile.component.html',
   styleUrls: ['./freelancer-profile.component.css']
 })
-export class FreelancerProfileComponent {
+export class FreelancerProfileComponent
+{
   userId: string | null = null;
   freelancerProfileInfo: FreelancerProfileInforamtion | null = null;
   requests: FreelancerRequestResult[] = [];
@@ -29,6 +34,9 @@ export class FreelancerProfileComponent {
   
   private loginService = inject(LoginService);
   private freelancerService = inject(FreelancerService);
+  private _freelancerService = inject(FreelancerService);
+  private dialog = inject(MatDialog);
+  private _router = inject(Router);
   
   isLoggedIn: boolean = false;
 
@@ -114,4 +122,45 @@ export class FreelancerProfileComponent {
       this.getFreelancerRequests();
     }
   }
+
+  DeleteFreelancerBusiness() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirm Deletion',
+        message: 'Are you sure you want to delete your business? This action cannot be undone.'
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._freelancerService.deleteFreelancerBusiness().subscribe({
+          next: (response) => {
+            console.log("Business deleted successfully:", response);
+            this.openAlertDialog('Success', 'Your business has been deleted successfully');
+            setTimeout(() => {
+              this._router.navigateByUrl('/home');
+            }, 3000);
+          },
+          error: (err) => {
+            console.error("Error occurred during deletion:", err);
+            this.openAlertDialog('Error', 'Failed to delete your business');
+          }
+        });
+      } else {
+        // console.log("Deletion canceled by the user.");
+      }
+    });
+  }
+
+  EditFreelancerBusiness() {
+    this._router.navigateByUrl("/updateFreelancerBusiness")
+  }
+
+
+  openAlertDialog(title: string, message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      data: { title: title, message: message },
+    });
+  }
+
 }

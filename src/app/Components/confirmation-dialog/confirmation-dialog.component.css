@@ -1,64 +1,109 @@
-/* // Dialog container styling */
+/* General Dialog Container Styling */
 :host {
   display: block;
   width: 100%;
 }
 
 .mat-dialog-container {
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
   animation: fadeInUp 0.3s ease-out;
 }
 
-/* // Title styling */
+/* Title Styling */
 h2[mat-dialog-title] {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-transform: capitalize;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+/* Message Content Styling */
+div[mat-dialog-content] {
+  margin: 1rem 0;
   text-align: center;
 }
 
-/* // Message content styling */
 div[mat-dialog-content] p {
-  font-size: 1rem;
-  color: #555;
-  line-height: 1.5;
-  text-align: center;
+  font-size: 1.1rem;
+  color: #444;
+  line-height: 1.8;
+  font-weight: 500;
+  margin: 0;
 }
 
-/* // Action buttons styling */
+/* Action Buttons Styling */
 div[mat-dialog-actions] {
   display: flex;
-  justify-content: space-between;
-  margin-top: 1.5rem;
+  justify-content: space-evenly;
+  margin-top: 2rem;
 }
 
 button[mat-button] {
-  min-width: 100px;
+  min-width: 120px;
   font-weight: 600;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
-button[mat-button].mat-button-base {
-  font-size: 0.9rem;
-}
-
-/* // Specific colors for buttons */
-button[mat-button]:first-of-type {
+/* Cancel Button */
+button.cancel-btn {
+  background-color: #e0e0e0;
   color: #555;
+  border: 2px solid #ccc;
 }
 
-button[mat-button][color="warn"] {
+button.cancel-btn:hover {
+  background-color: #f1f1f1;
+  border-color: #bbb;
+}
+
+/* Accept Button */
+button.accept-btn {
   background-color: #f44336;
   color: #fff;
+  border: 2px solid #f44336;
 }
 
-/* // Animation for dialog entrance */
+button.accept-btn:hover {
+  background-color: #d32f2f;
+  border-color: #c62828;
+  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .mat-dialog-container {
+    padding: 1.5rem;
+  }
+
+  h2[mat-dialog-title] {
+    font-size: 1.5rem;
+  }
+
+  div[mat-dialog-content] p {
+    font-size: 1rem;
+  }
+
+  button[mat-button] {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* Animation for Dialog Entrance */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
