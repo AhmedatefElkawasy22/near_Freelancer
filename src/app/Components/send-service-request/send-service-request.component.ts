@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -11,6 +11,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AccountService } from '../../Services/AccountService/account.service';
 import { NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-send-service-request',
@@ -21,14 +25,19 @@ import { NgIf } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    NgIf
+    NgIf,
   ],
   templateUrl: './send-service-request.component.html',
   styleUrl: './send-service-request.component.css',
 })
-export class SendServiceRequestComponent {
+export class SendServiceRequestComponent implements OnInit {
   SendServiceRequest: FormGroup;
   private _AccountService = inject(AccountService);
+  freelancerId: string | null = null;
+  private ActivatedRoute = inject(ActivatedRoute);
+  // private _router = inject(Router);
+  private _Location = inject(Location);
+  private dialog = inject(MatDialog);
   constructor() {
     this.SendServiceRequest = new FormGroup({
       freelancerId: new FormControl('', [Validators.required]),
@@ -47,21 +56,57 @@ export class SendServiceRequestComponent {
       ]),
     });
   }
+  ngOnInit(): void {
+    this.ActivatedRoute.paramMap.subscribe((params) => {
+      this.freelancerId = params.get('freelancerId');
+      if (!this.freelancerId || this.freelancerId === 'null') {
+        this.openAlertDialog(
+          'Error',
+          'Invalid Freelancer ID. Please try again.'
+        );
+        setTimeout(() => {
+          this._Location.back();
+        }, 3000);
+      } else {
+        if (this.freelancerId) {
+          this.SendServiceRequest.get("freelancerId")?.setValue(this.freelancerId);
+        }
+      }
+    });
+  }
 
   onSubmit() {
-    //get fleelancerId from URL
+    
     if (this.SendServiceRequest.valid) {
-      this._AccountService.SendServiceRequest(this.SendServiceRequest).subscribe({
+      this._AccountService
+        .SendServiceRequest(this.SendServiceRequest.value)
+        .subscribe({
           next: (response) => {
-          console.log('Service Request Sent Successfully:', response);
+            // console.log('Service Request Sent Successfully:', response);
+            this.openAlertDialog(
+              'Success',
+              'Your service request has been sent successfully'
+            );
             setTimeout(() => {
-              // navigate
+              this._Location.back();
             }, 3000);
           },
           error: (error) => {
-            console.error('Error sending Service Request:', error);
+            this.openAlertDialog('Error', (error=="Bad Request"? "An error occurred, please try again." :error) );
+            // console.error('Error sending Service Request:', error);
           },
         });
+    } else {
+      this.openAlertDialog(
+        'warning',
+        'Something went wrong, please try again.'
+      );
     }
+  }
+
+  openAlertDialog(title: string, message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      data: { title: title, message: message },
+    });
   }
 }

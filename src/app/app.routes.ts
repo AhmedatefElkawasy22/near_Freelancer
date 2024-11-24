@@ -14,17 +14,6 @@ import { SendServiceRequestComponent } from './Components/send-service-request/s
 import { UpdateFreelancerBusinessComponent } from './Components/update-freelancer-business/update-freelancer-business.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: LayoutComponent,
-    children: [{ path: '', redirectTo: '/home', pathMatch: 'full' }],
-  },
-  { path: 'home', component: HomeComponent, pathMatch: 'full' },
-  {
-    path: 'customerprofile',component: CustomerProfileComponent,title: 'Customer Profile',
-  }, {
-    path: 'freelancerprofile',component: FreelancerProfileComponent,title: 'freelancer Profile',
-  },
   { path: 'login', component: LoginComponent, title: 'Login' },
   {
     path: 'registration',
@@ -32,18 +21,53 @@ export const routes: Routes = [
     title: 'Registration',
   },
   {
-    path: 'ForgotPassword',
+    path: 'forgotPassword',
     component: ForgotPasswordComponent,
     title: 'Forgot Password',
   },
-  { path: 'EnterOTP', component: EnterOTPComponent, title: 'Enter OTP' },
+  { path: 'enterOTP', component: EnterOTPComponent, title: 'Enter OTP' },
   {
-    path: 'ResetPassword',
-    component: ResetPasswordComponent,
-    title: 'Reset Password',
+    path: '',
+    component: LayoutComponent,
+    children: [
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent, pathMatch: 'full' },
+      {
+        path: 'customerprofile',
+        component: CustomerProfileComponent,
+        title: 'Customer Profile',
+      },
+      {
+        path: 'freelancerprofile/:freelancerId',
+        component: FreelancerProfileComponent,
+        title: 'Freelancer Profile',
+      },
+      {
+        path: 'freelancerprofile',
+        component: FreelancerProfileComponent,
+        title: 'Freelancer Profile',
+      },
+      {
+        path: 'resetPassword',
+        component: ResetPasswordComponent,
+        title: 'Reset Password',
+      },
+      {
+        path: 'addFreelancerBusiness',
+        component: AddFreelancerBusinessComponent,
+        title: 'Add Freelancer Business',
+      },
+      {
+        path: 'updateFreelancerBusiness',
+        component: UpdateFreelancerBusinessComponent,
+        title: 'update Freelancer Business',
+      },
+      {
+        path: 'SendServiceRequest/:freelancerId',
+        component: SendServiceRequestComponent,
+        title: 'Send Service Request',
+      },
+    ],
   },
-  {path:'addFreelancerBusiness', component: AddFreelancerBusinessComponent , title:"Add Freelancer Business"},
-  {path:'updateFreelancerBusiness', component: UpdateFreelancerBusinessComponent , title:"update Freelancer Business"},
-  {path:'SendServiceRequest', component: SendServiceRequestComponent , title:"Send Service Request"},
   { path: '**', component: NotFoundComponent, title: 'not-found-page' },
 ];

@@ -1,14 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { HomeService } from '../../Services/Home/home.service';
-import { FreelancersResult } from '../../Models/freelancers-result';
+import { RouterLink } from '@angular/router';
+import { FreelancersResult } from '../../models/freelancers-result';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule,
-  ],
+    RouterLink,
+    ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

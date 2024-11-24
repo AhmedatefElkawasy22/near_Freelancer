@@ -1,131 +1,203 @@
 <div class="container-fluid">
-  <div class="row justify-content-center">
-    <!-- Profile Card Section -->
-    <div class="container-fluid col-lg-3 col-md-4 col-sm-6 col-12 card shadow m-2 align-items-center" style="height: 600px;">
-        <!-- Profile Image -->
-        <img class="card-img shadow-4-strong img-fluid m-2" src="https://plus.unsplash.com/premium_photo-1676998931123-75789162f170?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Service Image"  alt="Profile Image" />
-      <!-- Action Buttons -->
-      <div class="row justify-content-between">
-        <div class="col-md-4 col-sm-12  mb-2">
-          <button class="btn btn-outline-dark col-12 btn-sm">Change password</button>
-        </div>
-        <div class="col-md-4 col-sm-12 mb-2">
-          <button class="btn btn-outline-dark col-12 btn-sm" (click)="EditFreelancerBusiness()" >Edit information</button>
-        </div>
-        <div class="col-md-4 col-sm-12 mb-2">
-          <button class="btn btn-outline-danger col-12 btn-sm" (click)="DeleteFreelancerBusiness()">Delete Account</button>
-        </div>
+  <div class="row d-flex align-items-start justify-content-center">
+    <!-- First Column -->
+    <div
+      class="container-fluid col-lg-3 col-md-4 col-sm-6 col-12 card shadow m-2 align-items-center"
+      style="min-height: 450px;"    >
+      <img
+        class="card-img-top shadow-4-strong img-fluid m-2"
+        src="https://plus.unsplash.com/premium_photo-1676998931123-75789162f170?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="Service Image"
+      />
+      <div style="position: relative; width: 100%; margin-bottom: 10px">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          style="
+            background: none;
+            border: none;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+          "
+        >
+          <p
+            style="
+              font-weight: bolder;
+              color: #3d5161;
+              margin: 0;
+              font-size: 30px;
+            "
+          >
+            ...
+          </p>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <!-- <a mat-menu-item>change password</a> -->
+          <a mat-menu-item (click)="EditFreelancerBusiness()">Update profile</a>
+          <button mat-menu-item (click)="DeleteFreelancerBusiness()">Delete account</button>
+        </mat-menu>
       </div>
-      <!-- Profile Info -->
       <div class="text-center m-2 card-body">
-        <h1>{{freelancerProfileInfo?.name}}</h1>
+        <h1 class="profile-name">{{ freelancerProfileInfo?.name }}</h1>
+        <h3 class="profission">{{freelancerProfileInfo?.profession}}</h3>
+        <p class="address">
+          {{ freelancerProfileInfo?.state }}, {{ freelancerProfileInfo?.city }},
+          {{ freelancerProfileInfo?.street }}
+        </p>
       </div>
     </div>
 
     <!-- Services and Requests Section -->
-    <div class="col-lg-8 col-md-7 col-sm-6 col-12 card shadow m-2 align-items-center">
+    <div
+      class="col-lg-8 col-md-7 col-sm-6 col-12 card shadow m-2 align-items-center"
+      style="min-height: 450px;"    >
       <!-- Offered Services -->
-     <div class="container-fluid my-3">
-      <h3>Offered Services</h3>
+      <div class="container-fluid my-3">
+        <h3>Offered Services</h3>
+        <a class="btn text-bg-dark m-2">Add offered services</a>
+        <a class="btn text-bg-dark m-2" (click)="sendServiceRequest()">Send services Request</a>
 
         <div class="row">
-          @if (offeredServices.length > 0) {
-            @for ( item of offeredServices; track item.id) {
-              <div class="col-lg-3 col-md-4 col-sm-12 mb-4">
-                <a href="" style="text-decoration: none;">
-                  <div class="card text-center">
-                    <img src="https://plus.unsplash.com/premium_photo-1676998931123-75789162f170?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Service Image" class="card-img-top" />
-                    <div class="card-body">
-                      <h2 class="card-title">{{item.name}}</h2>
-                      <h2 class="card-title">{{item.price}}</h2>
-                      <h4 class="card-title">{{item.description}}</h4>
-                    </div>
-                  </div>
-                </a>
+          @if (offeredServices.length > 0) { @for ( item of offeredServices;
+          track item.id) {
+          <div class="col-lg-3 col-md-4 col-sm-12 mb-4">
+            <a routerLink="" routerLinkActive="router-link-active"  style="text-decoration: none" >
+              <div class="card text-center">
+                <img
+                  src="https://plus.unsplash.com/premium_photo-1676998931123-75789162f170?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Service Image"
+                  class="card-img-top"
+                />
+                <div class="card-body text-start">
+                  <h2 class="card-title text-center">{{ item.name }}</h2>
+                  <h2 class="card-title">{{ item.price }}</h2>
+                  <h4 class="card-title">{{ item.description }}</h4>
+                </div>
               </div>
-            }
-          } @else {
-            <p class="text-center">No offered services</p>
+            </a>
+          </div>
+          } } @else {
+          <p class="text-center">No offered services</p>
           }
         </div>
-      </div> 
+      </div>
 
-
-        <!-- Pagination Controls -->
-        <div class="container-fluid my-3">
-
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              <!-- Previous button -->
-              <li class="page-item" [class.disabled]="pageIndex === 1">
-                <button class="page-link" (click)="onServicePageChange(servicesPageIndex - 1)">Previous</button>
-              </li>
-              <!-- Dynamic page numbers -->
-              <li *ngFor="let page of [].constructor(servicesPageIndex); let i = index" class="page-item" [class.active]="i + 1 === pageIndex">
-                <button class="page-link" (click)="onServicePageChange(i + 1)">{{ i + 1 }}</button>
-              </li>
-              <!-- Next button -->
-              <li class="page-item" [class.disabled]="pageIndex === totalPages">
-                <button class="page-link" (click)="onServicePageChange(servicesPageIndex + 1)">Next</button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-
-
-
+      <!-- Pagination Controls -->
+      <div class="container-fluid">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <!-- Previous button -->
+            <li class="page-item" [class.disabled]="pageIndex === 1">
+              <button
+                class="page-link"
+                (click)="onServicePageChange(servicesPageIndex - 1)"
+              >
+                Previous
+              </button>
+            </li>
+            <!-- Dynamic page numbers -->
+            <li
+              *ngFor="
+                let page of [].constructor(servicesPageIndex);
+                let i = index
+              "
+              class="page-item"
+              [class.active]="i + 1 === pageIndex"
+            >
+              <button class="page-link" (click)="onServicePageChange(i + 1)">
+                {{ i + 1 }}
+              </button>
+            </li>
+            <!-- Next button -->
+            <li class="page-item" [class.disabled]="pageIndex === totalPages">
+              <button
+                class="page-link"
+                (click)="onServicePageChange(servicesPageIndex + 1)"
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
 
       <!-- My Requests Section -->
       <div class="container-fluid my-3">
         <h3>My Request</h3>
         @if (requests.length > 0) {
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Request</th>
-                            <th>Status</th>
-                            <th>Customer</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (item of requests; track item.customerId) {
-                            <tr>
-                                <td>{{item.name}}</td>
-                                <td>{{item.status}}</td>
-                                <td>{{item.customerName}}</td>
-                                <td>{{item.dateTime}}</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+        <div class="table-responsive w-100">
+          <table class="table table-bordered w-100">
+            <thead>
+              <tr>
+                <th>Request</th>
+                <th>Status</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of requests; track item.customerId) {
+              <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.customerName }}</td>
+                <td>{{ item.dateTime }}</td>
+                <td>
+                  <div class="d-flex justify-content-center">
+                    <a
+                      class="btn btn-primary mx-1"
+                      (click)="acceptRequest(item.id)"
+                      >Accept</a
+                    >
+                    <a
+                      class="btn btn-secondary mx-1"
+                      (click)="refuseRequest(item.id)"
+                      >Refuse</a
+                    >
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
         } @else {
-            <p class="text-center">No requests</p>
+        <p class="text-center">No requests</p>
         }
-    </div>
-    
+      </div>
 
-        <!-- Pagination Controls -->
-        <div class="container-fluid my-3">
-
+      <!-- Pagination Controls -->
+      <div class="container-fluid">
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
             <!-- Previous button -->
             <li class="page-item" [class.disabled]="pageIndex === 1">
-              <button class="page-link" (click)="onPageChange(pageIndex - 1)">Previous</button>
+              <button class="page-link" (click)="onPageChange(pageIndex - 1)">
+                Previous
+              </button>
             </li>
             <!-- Dynamic page numbers -->
-            <li *ngFor="let page of [].constructor(totalPages); let i = index" class="page-item" [class.active]="i + 1 === pageIndex">
-              <button class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</button>
+            <li
+              *ngFor="let page of [].constructor(totalPages); let i = index"
+              class="page-item"
+              [class.active]="i + 1 === pageIndex"
+            >
+              <button class="page-link" (click)="onPageChange(i + 1)">
+                {{ i + 1 }}
+              </button>
             </li>
             <!-- Next button -->
             <li class="page-item" [class.disabled]="pageIndex === totalPages">
-              <button class="page-link" (click)="onPageChange(pageIndex + 1)">Next</button>
+              <button class="page-link" (click)="onPageChange(pageIndex + 1)">
+                Next
+              </button>
             </li>
           </ul>
         </nav>
       </div>
     </div>
+  </div>
 </div>

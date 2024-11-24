@@ -15,24 +15,6 @@ export class FreelancerService {
   private _router = inject(Router);
   private _MatDialog = inject(MatDialog);
 
-  getFreelancer(): Observable<ApiResponse> {
-    return this._http
-      .get<ApiResponse>(
-        `${environment.BaseURL}/api/Freelancer/freelancer-profile`,
-        {}
-      )
-      .pipe(
-        catchError((error) => {
-          console.error('Error occurred in API call:', error);
-          const errorMessage =
-            error.status === 0
-              ? 'Cannot connect to backend server. Please ensure the server is running.'
-              : `Error Code: ${error.status}, Message: ${error.message}`;
-          return throwError(() => new Error(errorMessage));
-        })
-      );
-  }
-
   getFreelancerRequests(
     pageIndex: number = 1,
     pageSize: number = 12
@@ -85,26 +67,84 @@ export class FreelancerService {
       );
   }
 
+  acceptRequest(requestId: string) {
+    return this._http
+      .post<ApiResponse>(
+        `${environment.BaseURL}/api/Freelancer/accept/${requestId}`,
+        {}
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred in API call:', error);
+          const errorMessage =
+            error.status === 0
+              ? 'Cannot connect to backend server. Please ensure the server is running.'
+              : `Error Code: ${error.status}, Message: ${error.message}`;
+          return throwError(() => new Error(errorMessage));
+        })
+      );
+  }
+
+  refuseRequest(requestId: string) {
+    return this._http
+      .post<ApiResponse>(
+        `${environment.BaseURL}/api/Freelancer/accept/${requestId}`,
+        {}
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred in API call:', error);
+          const errorMessage =
+            error.status === 0
+              ? 'Cannot connect to backend server. Please ensure the server is running.'
+              : `Error Code: ${error.status}, Message: ${error.message}`;
+          return throwError(() => new Error(errorMessage));
+        })
+      );
+  }
+
+  getfreelancerBusiness(): Observable<any> {
+    return this._http.get<any>(
+      `${environment.BaseURL}/api/Freelancer/freelancer-profile`
+    );
+  }
+
+  updateFreelancerBusiness(data: any): Observable<any> {
+    return this._http.put<any>(
+      `${environment.BaseURL}/api/Freelancer/update-freelancer-business`,
+      data
+    );
+  }
+
+
+  getFreelancer(freelancerId?: string): Observable<ApiResponse> {
+    const url = freelancerId
+      ? `${environment.BaseURL}/api/Freelancer/get-freelancer-by-id/${freelancerId}`
+      : `${environment.BaseURL}/api/Freelancer/freelancer-profile`;
+
+    return this._http.get<ApiResponse>(url).pipe(
+      catchError((error) => {
+        console.error('Error occurred in API call:', error);
+        const errorMessage =
+          error.status === 0
+            ? 'Cannot connect to backend server. Please ensure the server is running.'
+            : `Error Code: ${error.status}, Message: ${error.message}`;
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
   addFreelancerBusiness(data: any): Observable<any> {
     return this._http.post<any>(`${environment.BaseURL}/api/Freelancer/add-freelancer-business`, data)
   }
 
   deleteFreelancerBusiness(): Observable<any> {
     return this._http.delete<any>(`${environment.BaseURL}/api/Freelancer/delete-freelancer-business`)
-  }
-  
-  getfreelancerBusiness(): Observable<any> {
-    return this._http.get<any>(`${environment.BaseURL}/api/Freelancer/freelancer-profile`)
-  }
+  }
 
-  updateFreelancerBusiness(data:any): Observable<any>{
-    return this._http.put<any>(`${environment.BaseURL}/api/Freelancer/update-freelancer-business`, data)
-  }
-
-  openAlertDialog(title: string, message: string){
+  openAlertDialog(title: string, message: string) {
     this._MatDialog.open(AlertDialogComponent, {
       data: { title: title, message: message },
     });
   }
-  
 }

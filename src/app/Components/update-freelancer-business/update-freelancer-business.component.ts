@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { FreelancerService } from '../../Services/Freelancer/freelancer.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf, Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
@@ -134,6 +134,7 @@ export class UpdateFreelancerBusinessComponent {
   private _freelancerService = inject(FreelancerService);
   private _MatDialog = inject(MatDialog);
   private _router = inject(Router);
+  private _Location = inject(Location);
 
   constructor() {
     this.updateFreelancerBusiness = new FormGroup({
@@ -149,10 +150,10 @@ export class UpdateFreelancerBusinessComponent {
         Validators.minLength(5),
         Validators.maxLength(300),
       ]),
-      // phoneNumber: new FormControl('', [
-      //   Validators.required,
-      //   Validators.pattern('^\\+?[0-9]{10,15}$'),
-      // ]),
+      phoneNumber: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^\\+?[0-9]{10,15}$'),
+      ]),
       profession: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z ]{5,50}$'),
@@ -237,13 +238,24 @@ export class UpdateFreelancerBusinessComponent {
   }
 
   onSubmit() {
+    const phoneNumber = this.updateFreelancerBusiness.get('phoneNumber')?.value;
+    // console.log('code', this.codeOfCountry);
+    if (!this.codeOfCountry || this.codeOfCountry.trim() === '') {
+      this.openAlertDialog('warning', 'Country code is required. Please select it from the provided options.');
+      return;
+    }
+    if (phoneNumber.startsWith('+')) {
+      this.openAlertDialog('warning', 'Please remove the country code from the phone number field and select it separately.');
+      return;
+    }
+    
     if (this.updateFreelancerBusiness.valid) {
       // add code to phoneNumber
-      const phoneNumber = this.updateFreelancerBusiness.get('phoneNumber')?.value;
-      console.log('code', this.codeOfCountry);
-      this.updateFreelancerBusiness
-        .get('phoneNumber')
-        ?.setValue(this.codeOfCountry + phoneNumber);
+      if (this.codeOfCountry && this.codeOfCountry.startsWith('+')) {
+        this.updateFreelancerBusiness
+          .get('phoneNumber')
+          ?.setValue(this.codeOfCountry + phoneNumber);
+      }
       //  console.log(this.updateFreelancerBusiness)
       this._freelancerService
         .updateFreelancerBusiness(this.updateFreelancerBusiness.value)
@@ -255,7 +267,7 @@ export class UpdateFreelancerBusinessComponent {
               'your Business has been add successfuly'
             );
             setTimeout(() => {
-              this._router.navigateByUrl('/home');
+              this._Location.back();
             }, 3000);
           },
           error: (err) => {
@@ -263,7 +275,7 @@ export class UpdateFreelancerBusinessComponent {
             this.openAlertDialog('Error', err);
             setTimeout(() => {
               this._router.navigateByUrl('/home');
-            }, 3000)
+            }, 3000);
           },
         });
     }
