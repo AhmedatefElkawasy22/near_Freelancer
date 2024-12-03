@@ -20,7 +20,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./customer-profile.component.css'],
 })
 export class CustomerProfileComponent implements OnInit {
-
   userId: string | null = null;
   customerProfileInfo: CustomerProfileInformation | null = null;
   requests: CustomerRequestResult[] = [];
@@ -30,7 +29,7 @@ export class CustomerProfileComponent implements OnInit {
 
   private loginService = inject(LoginService);
   private customerService = inject(CustomerService);
-
+  private _router = inject(Router);
 
   ngOnInit() {
     const claims = this.loginService.getTokenClaims();
@@ -87,6 +86,13 @@ export class CustomerProfileComponent implements OnInit {
     }
   }
 
-
-  
+  DeleteAccount() {
+    throw new Error('Method not implemented.');
+  }
+  UpdateProfile() {
+    throw new Error('Method not implemented.');
+  }
+  ChangePassword() {
+    this._router.navigateByUrl('/changepassword');
+  }
 }

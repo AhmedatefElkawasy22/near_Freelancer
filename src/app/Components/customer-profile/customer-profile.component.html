@@ -20,9 +20,9 @@
         </button>
 
         <mat-menu #menu="matMenu">
-          <a mat-menu-item>change password</a>
-          <a mat-menu-item>Update profile</a>
-          <button mat-menu-item>Delete account</button>
+          <a mat-menu-item (click)="ChangePassword()">change password</a>
+          <a mat-menu-item (click)="UpdateProfile()">Update profile</a>
+          <button mat-menu-item (click)="DeleteAccount()">Delete account</button>
         </mat-menu>
       </div>
       <div class="text-center m-2 card-body">

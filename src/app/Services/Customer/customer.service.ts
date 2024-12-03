@@ -37,7 +37,22 @@ export class CustomerService {
           : `Error Code: ${error.status}, Message: ${error.message}`;
         return throwError(() => new Error(errorMessage));
       })
-    );}
+    );
+  }
+
+  SendServiceRequest(body: any): Observable < any > {
+    return this._http.post(
+      `${environment.BaseURL}/api/Account/send-service-request`, body,
+      {responseType: 'text'}
+    );
+  }
+  
+  //Delete
+
+
+  //update
+
+
 
     
 }

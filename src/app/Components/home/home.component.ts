@@ -31,10 +31,10 @@ export class HomeComponent implements OnInit {
       response => {
         this.freelancers = response.data.data;
         this.totalPages = Math.ceil(response.data.totalPages / this.pageSize);
-        console.log('Freelancers:', this.freelancers);
+        // console.log('Freelancers:', this.freelancers);
       },
       error => {
-        console.error('Error fetching freelancers:', error.message);
+        // console.error('Error fetching freelancers:', error.message);
       }
     );
   }

@@ -9,12 +9,12 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AccountService } from '../../Services/AccountService/account.service';
 import { NgIf } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
+import { CustomerService } from '../../Services/Customer/customer.service';
 
 @Component({
   selector: 'app-send-service-request',
@@ -32,7 +32,7 @@ import { Location } from '@angular/common';
 })
 export class SendServiceRequestComponent implements OnInit {
   SendServiceRequest: FormGroup;
-  private _AccountService = inject(AccountService);
+  private _CustomerService = inject(CustomerService);
   freelancerId: string | null = null;
   private ActivatedRoute = inject(ActivatedRoute);
   // private _router = inject(Router);
@@ -78,7 +78,7 @@ export class SendServiceRequestComponent implements OnInit {
   onSubmit() {
     
     if (this.SendServiceRequest.valid) {
-      this._AccountService
+      this._CustomerService
         .SendServiceRequest(this.SendServiceRequest.value)
         .subscribe({
           next: (response) => {

@@ -12,6 +12,7 @@ import { FreelancerProfileComponent } from './Components/freelancer-profile/free
 import { AddFreelancerBusinessComponent } from './Components/add-freelancer-business/add-freelancer-business.component';
 import { SendServiceRequestComponent } from './Components/send-service-request/send-service-request.component';
 import { UpdateFreelancerBusinessComponent } from './Components/update-freelancer-business/update-freelancer-business.component';
+import { ChangePasswordComponent } from './Components/change-password/change-password.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -67,6 +68,11 @@ export const routes: Routes = [
         component: SendServiceRequestComponent,
         title: 'Send Service Request',
       },
+      {
+        path: 'changepassword',
+        component: ChangePasswordComponent,
+        title: 'Change Password',
+      }
     ],
   },
   { path: '**', component: NotFoundComponent, title: 'not-found-page' },

@@ -34,14 +34,14 @@ export class AccountService {
     );
   }
    
-   
-  
-SendServiceRequest(body: any): Observable < any > {
+  ChangePassword(body: any): Observable<any>{
     return this._HttpClient.post(
-      `${environment.BaseURL}/api/Account/send-service-request`, body,
-      {responseType: 'text'}
+      `${environment.BaseURL}/api/Account/change-password`, body,
+      {responseType:'text'}
     );
   }
+  
+ 
 
 
 }
