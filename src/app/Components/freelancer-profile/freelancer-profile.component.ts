@@ -163,7 +163,7 @@ export class FreelancerProfileComponent {
       if (result) {
         this._freelancerService.deleteFreelancerBusiness().subscribe({
           next: (response) => {
-            console.log('Business deleted successfully:', response);
+            // console.log('Business deleted successfully:', response);
             this.openAlertDialog(
               'Success',
               'Your business has been deleted successfully'
@@ -173,7 +173,7 @@ export class FreelancerProfileComponent {
             }, 3000);
           },
           error: (err) => {
-            console.error('Error occurred during deletion:', err);
+            // console.error('Error occurred during deletion:', err);
             this.openAlertDialog('Error', 'Failed to delete your business');
           },
         });
@@ -185,7 +185,6 @@ export class FreelancerProfileComponent {
 
   EditFreelancerBusiness() {
     this._router.navigateByUrl('/updateFreelancerBusiness');
-    
   }
 
   sendServiceRequest() {

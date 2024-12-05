@@ -13,6 +13,7 @@ import { AddFreelancerBusinessComponent } from './Components/add-freelancer-busi
 import { SendServiceRequestComponent } from './Components/send-service-request/send-service-request.component';
 import { UpdateFreelancerBusinessComponent } from './Components/update-freelancer-business/update-freelancer-business.component';
 import { ChangePasswordComponent } from './Components/change-password/change-password.component';
+import { UpdateProfileComponent } from './Components/update-profile/update-profile.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -72,6 +73,11 @@ export const routes: Routes = [
         path: 'changepassword',
         component: ChangePasswordComponent,
         title: 'Change Password',
+      },
+      {
+        path: 'updateprofile',
+        component: UpdateProfileComponent,
+        title: 'Update Profile',
       }
     ],
   },

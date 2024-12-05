@@ -1,0 +1,148 @@
+<div class="body">
+    <div
+      class="container d-flex justify-content-center align-items-center min-vh-100"
+    >
+      <form
+        [formGroup]="updateProfile"
+        (ngSubmit)="onSubmit()"
+        class="p-5 form-container shadow bg-light rounded"
+      >
+        <h2 class="text-center mb-4">Update Profile</h2>
+  
+        <!-- Name Field -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            id="name"
+            formControlName="name"
+            class="form-control"
+            placeholder="Enter name"
+          />
+          <div
+            *ngIf="
+              updateProfile.get('name')?.invalid &&
+              updateProfile.get('name')?.touched
+            "
+            class="text-danger mt-1"
+          >
+            <small *ngIf="updateProfile.get('name')?.errors?.['required']"
+              >Name is required.</small
+            >
+            <small *ngIf="updateProfile.get('name')?.errors?.['pattern']"
+              >Name can contain only letters and numbers.</small
+            >
+            <small
+              *ngIf="updateProfile.get('name')?.errors?.['minlength']"
+              >Minimum 3 characters required.</small
+            >
+            <small
+              *ngIf="updateProfile.get('name')?.errors?.['maxlength']"
+              >You have exceeded the character limit.</small
+            >
+          </div>
+        </div>
+  
+        <!-- Street Field -->
+        <div class="mb-3">
+          <label for="street" class="form-label">Street</label>
+          <input
+            id="street"
+            formControlName="street"
+            class="form-control"
+            placeholder="Enter street"
+          />
+          <div
+            *ngIf="
+              updateProfile.get('street')?.invalid &&
+              updateProfile.get('street')?.touched
+            "
+            class="text-danger mt-1"
+          >
+            <small
+              *ngIf="updateProfile.get('street')?.errors?.['required']"
+              >Street is required.</small
+            >
+            <small
+              *ngIf="updateProfile.get('street')?.errors?.['pattern']"
+              >Street can contain letters, numbers, spaces, commas, periods, and
+              hyphens.</small
+            >
+            <small
+              *ngIf="updateProfile.get('street')?.errors?.['maxlength']"
+              >You have exceeded the character limit.</small
+            >
+          </div>
+        </div>
+  
+        <!-- City Field -->
+        <div class="mb-3">
+          <label for="city" class="form-label">City</label>
+          <input
+            id="city"
+            formControlName="city"
+            class="form-control"
+            placeholder="Enter city"
+          />
+          <div
+            *ngIf="
+              updateProfile.get('city')?.invalid &&
+              updateProfile.get('city')?.touched
+            "
+            class="text-danger mt-1"
+          >
+            <small *ngIf="updateProfile.get('city')?.errors?.['required']"
+              >City is required.</small
+            >
+            <small *ngIf="updateProfile.get('city')?.errors?.['pattern']"
+              >City can contain letters, spaces, apostrophes, and hyphens.</small
+            >
+            <small
+              *ngIf="updateProfile.get('city')?.errors?.['maxlength']"
+              >You have exceeded the character limit.</small
+            >
+          </div>
+        </div>
+  
+        <!-- State Field -->
+        <div class="mb-3">
+          <label for="state" class="form-label">State</label>
+          <input
+            id="state"
+            formControlName="state"
+            class="form-control"
+            placeholder="Enter state"
+          />
+          <div
+            *ngIf="
+              updateProfile.get('state')?.invalid &&
+              updateProfile.get('state')?.touched
+            "
+            class="text-danger mt-1"
+          >
+            <small
+              *ngIf="updateProfile.get('state')?.errors?.['required']"
+              >State is required.</small
+            >
+            <small *ngIf="updateProfile.get('state')?.errors?.['pattern']"
+              >State can contain letters and spaces only.</small
+            >
+            <small
+              *ngIf="updateProfile.get('state')?.errors?.['maxlength']"
+              >You have exceeded the character limit.</small
+            >
+          </div>
+        </div>
+  
+       
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="!updateProfile.valid"
+          class="btn btn-success w-100 mt-3 submit-btn"
+        >
+          Update
+        </button>
+      </form>
+    </div>
+  </div>
+  

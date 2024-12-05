@@ -46,11 +46,9 @@ export class CustomerService {
       {responseType: 'text'}
     );
   }
+
+
   
-  //Delete
-
-
-  //update
 
 
 

@@ -6,11 +6,11 @@ import { CustomerRequestResult } from '../../models/customer-request-result';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FreelancerService } from '../../Services/Freelancer/freelancer.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { Router } from '@angular/router';
+import { AccountService } from '../../Services/AccountService/account.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-customer-profile',
@@ -30,6 +30,9 @@ export class CustomerProfileComponent implements OnInit {
   private loginService = inject(LoginService);
   private customerService = inject(CustomerService);
   private _router = inject(Router);
+  private _accountService = inject(AccountService);
+  private dialog = inject(MatDialog);
+
 
   ngOnInit() {
     const claims = this.loginService.getTokenClaims();
@@ -87,12 +90,44 @@ export class CustomerProfileComponent implements OnInit {
   }
 
   DeleteAccount() {
-    throw new Error('Method not implemented.');
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirm Deletion',
+        message:
+          'Are you sure you want to delete your Account? This action cannot be undone.',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this._accountService.DeleteAccoutn().subscribe((response) => {
+          // console.log('Account deleted successfully:', response);
+          this.openAlertDialog(
+            'Success',
+            'Your account has been deleted successfully'
+          );
+          setTimeout(() => {
+            this._router.navigateByUrl('/registration');
+          }, 3000);
+        }, (error) => {
+          // console.error('Error deleting account:', error);
+          this.openAlertDialog('Error', 'There is a problem, if you have your own work, please delete it first.');
+        });
+      } else {
+        // console.log("Deletion canceled by the user.");
+      }
+    });
   }
   UpdateProfile() {
-    throw new Error('Method not implemented.');
+    this._router.navigateByUrl('/updateprofile');
   }
   ChangePassword() {
     this._router.navigateByUrl('/changepassword');
+  }
+
+  openAlertDialog(title: string, message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      data: { title: title, message: message },
+    });
   }
 }

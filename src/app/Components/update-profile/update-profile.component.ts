@@ -1,26 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, NgModule } from '@angular/core';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { FreelancerService } from '../../Services/Freelancer/freelancer.service';
+import { FormControl, FormGroup,    FormsModule,    ReactiveFormsModule, Validators } from '@angular/forms';
+import { AccountService } from '../../Services/AccountService/account.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CommonModule, NgFor, NgIf, Location } from '@angular/common';
+import { CommonModule, NgFor, NgIf,Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-update-freelancer-business',
+  selector: 'app-update-profile',
   standalone: true,
-  imports: [NgIf, NgFor, CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './update-freelancer-business.component.html',
-  styleUrl: './update-freelancer-business.component.css',
+  imports: [ReactiveFormsModule,NgIf,NgFor,CommonModule,FormsModule],
+  templateUrl: './update-profile.component.html',
+  styleUrl: './update-profile.component.css'
 })
-export class UpdateFreelancerBusinessComponent {
+export class UpdateProfileComponent {
+
   countryCodes = [
     { name: 'United States', code: '+1' },
     { name: 'United Kingdom', code: '+44' },
@@ -130,151 +124,77 @@ export class UpdateFreelancerBusinessComponent {
   ];
 
   codeOfCountry!: string;
-  updateFreelancerBusiness!: FormGroup;
-  private _freelancerService = inject(FreelancerService);
+  updateProfile!: FormGroup;
+  private _AccountService = inject(AccountService);
   private _MatDialog = inject(MatDialog);
   private _router = inject(Router);
   private _Location = inject(Location);
 
   constructor() {
-    this.updateFreelancerBusiness = new FormGroup({
+    this.updateProfile = new FormGroup({
       name: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[a-zA-Z0-9 ]{5,50}$'),
+        Validators.pattern('^[a-zA-Z0-9 ]{3,50}$'),
         Validators.minLength(3),
-        Validators.maxLength(50),
-      ]),
-      description: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z ]{5,300}$'),
-        Validators.minLength(5),
-        Validators.maxLength(300),
-      ]),
-      phoneNumber: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^\\+?[0-9]{10,15}$'),
-      ]),
-      profession: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z ]{5,50}$'),
-        Validators.minLength(5),
         Validators.maxLength(50),
       ]),
       street: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[a-zA-Z0-9\\s.,-]{5,50}$'),
+        Validators.pattern('^[a-zA-Z0-9\\s.,-]{3,50}$'),
         Validators.minLength(3),
         Validators.maxLength(50),
       ]),
       city: new FormControl('', [
         Validators.required,
-        Validators.pattern("^[a-zA-Z\\s'-]{2,50}$"),
+        Validators.pattern("^[a-zA-Z\\s'-]{3,50}$"),
         Validators.minLength(3),
         Validators.maxLength(50),
       ]),
       state: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[a-zA-Z\\s]{2,40}$'),
+        Validators.pattern('^[a-zA-Z\\s]{3,40}$'),
         Validators.minLength(3),
         Validators.maxLength(50),
       ]),
-      skills: new FormArray([]),
     });
-
     // Call the API to get data
-    this._freelancerService.getfreelancerBusiness().subscribe({
+    this._AccountService.getCustomerInfo().subscribe({
       next: (response) => {
         // console.log('ok', response);
-        this.updateFreelancerBusiness.patchValue({
+        this.updateProfile.patchValue({
           name: response.data.name,
-          description: response.data.description,
-          phoneNumber: response.data.phoneNumber,
-          profession: response.data.profession,
           street: response.data.street,
           city: response.data.city,
           state: response.data.state,
         });
-        const skillsArray = this.updateFreelancerBusiness.get(
-          'skills'
-        ) as FormArray;
-        skillsArray.clear();
-        response.data.skills.forEach((skill: string) => {
-          skillsArray.push(
-            new FormControl(skill, [
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9\\s]{3,50}$'),
-              Validators.minLength(3),
-              Validators.maxLength(50),
-            ])
-          );
-        });
       },
       error: (error) => {
         // console.log("error",error)
-        this._router.navigateByUrl('/home');
-        // this.openAlertDialog('Error', error);
-        // setTimeout(() => {
-        // }, 3000);
+        this._Location.back();
+        setTimeout(() => {
+          this.openAlertDialog('Error', "An error occurred, please try again.");
+        }, 3000);
       },
     });
   }
 
-  get skills() {
-    return this.updateFreelancerBusiness.get('skills') as FormArray;
-  }
-
-  addskill() {
-    this.skills.push(
-      new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9\\s]{3,50}$'),
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ])
-    );
-  }
-  removeskill(i: number) {
-    this.skills.removeAt(i);
-  }
-
   onSubmit() {
-    const phoneNumber = this.updateFreelancerBusiness.get('phoneNumber')?.value;
-    // console.log('code', this.codeOfCountry);
-    if (!this.codeOfCountry || this.codeOfCountry.trim() === '') {
-      this.openAlertDialog('warning', 'Country code is required. Please select it from the provided options.');
-      return;
-    }
-    if (phoneNumber.startsWith('+')) {
-      this.openAlertDialog('warning', 'Please remove the country code from the phone number field and select it separately.');
-      return;
-    }
-    
-    if (this.updateFreelancerBusiness.valid) {
-      // add code to phoneNumber
-      if (this.codeOfCountry && this.codeOfCountry.startsWith('+')) {
-        this.updateFreelancerBusiness
-          .get('phoneNumber')
-          ?.setValue(this.codeOfCountry + phoneNumber);
-      }
-      //  console.log(this.updateFreelancerBusiness)
-      this._freelancerService
-        .updateFreelancerBusiness(this.updateFreelancerBusiness.value)
+    if (this.updateProfile.valid) {
+      this._AccountService
+        .UpdateProfile(this.updateProfile.value)
         .subscribe({
           next: (response) => {
-            console.log('API response:', response);
-            this.openAlertDialog(
-              'succsses',
-              'your Business has been add successfuly'
-            );
+            // console.log('ok', response);
+            this.openAlertDialog('Success', 'Profile updated successfully.');
             setTimeout(() => {
               this._Location.back();
             }, 3000);
           },
-          error: (err) => {
-            // console.error('Error occurred in API call:', err);
-            this.openAlertDialog('Error', err);
+          error: (error) => {
+            // console.log("error",error)
+            this.openAlertDialog('Error', "An error occurred, please try again.");
             setTimeout(() => {
-              this._router.navigateByUrl('/home');
+              this._Location.back();
             }, 3000);
           },
         });
