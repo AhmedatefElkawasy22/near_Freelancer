@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { LoginService } from '../../Services/Login/login-service';
 import { CustomerService } from '../../Services/Customer/customer.service';
 import { CustomerProfileInformation } from '../../models/customer-profile-information';
@@ -24,7 +24,7 @@ export class CustomerProfileComponent implements OnInit {
   customerProfileInfo: CustomerProfileInformation | null = null;
   requests: CustomerRequestResult[] = [];
   pageIndex: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 8;
   totalPages: number = 0;
 
   private loginService = inject(LoginService);
@@ -32,6 +32,7 @@ export class CustomerProfileComponent implements OnInit {
   private _router = inject(Router);
   private _accountService = inject(AccountService);
   private dialog = inject(MatDialog);
+  roles = signal<string[]>([]);
 
 
   ngOnInit() {
@@ -44,7 +45,17 @@ export class CustomerProfileComponent implements OnInit {
       console.error('User is not logged in or token claims are not available.');
     }
   }
-
+  loadRoles(): void {
+    this.loginService.getUserRoles().subscribe(
+      (response) => {
+        this.roles.set(response.data); 
+        console.log('Roles:', response.data);
+      },
+      (error) => {
+        console.error('Error fetching roles:', error.message);
+      }
+    );
+  }
   getCustomerInfo() {
     if (this.userId) {
       this.customerService.getCustomer(this.userId).subscribe(
@@ -69,9 +80,9 @@ export class CustomerProfileComponent implements OnInit {
         .getCustomerRequests(this.pageIndex, this.pageSize)
         .subscribe(
           (response) => {
-            this.requests = response.data;
-            this.totalPages = response.data.totalPages;
-            console.log('Requests Details:', response);
+            this.requests = response.data.data;
+            this.totalPages =response.data.totalPages;
+            console.log('Requests Details:', this.requests);
           },
           (error) => {
             console.error('Error fetching requests details:', error);
@@ -124,7 +135,10 @@ export class CustomerProfileComponent implements OnInit {
   ChangePassword() {
     this._router.navigateByUrl('/changepassword');
   }
-
+  AddFreelancerPage() {
+    this._router.navigateByUrl('/addFreelancerBusiness');
+  }
+  
   openAlertDialog(title: string, message: string) {
     this.dialog.open(AlertDialogComponent, {
       data: { title: title, message: message },

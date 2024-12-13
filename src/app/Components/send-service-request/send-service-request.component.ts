@@ -59,21 +59,14 @@ export class SendServiceRequestComponent implements OnInit {
   ngOnInit(): void {
     this.ActivatedRoute.paramMap.subscribe((params) => {
       this.freelancerId = params.get('freelancerId');
-      if (!this.freelancerId || this.freelancerId === 'null') {
-        this.openAlertDialog(
-          'Error',
-          'Invalid Freelancer ID. Please try again.'
-        );
-        setTimeout(() => {
-          this._Location.back();
-        }, 3000);
+      if (this.freelancerId) {
+        this.SendServiceRequest.patchValue({ freelancerId: this.freelancerId });
       } else {
-        if (this.freelancerId) {
-          this.SendServiceRequest.get("freelancerId")?.setValue(this.freelancerId);
-        }
+        this.openAlertDialog('Error', 'Invalid Freelancer ID. Please try again.');
       }
     });
   }
+  
 
   onSubmit() {
     

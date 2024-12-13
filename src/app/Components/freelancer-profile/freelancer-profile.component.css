@@ -16,4 +16,14 @@
     font-size: 1.4rem;        
     color: #2c3e50;        
     margin-top: 0;          
+  }.card-img-top {
+    object-fit: cover;
+    height: 200px; /* Ensure a consistent height */
+    width: 100%; /* Full width */
+    display: block; /* Ensure it takes full space */
   }
+  
+  .card-body {
+    min-height: 200px; /* Maintain consistent height */
+  }
+  

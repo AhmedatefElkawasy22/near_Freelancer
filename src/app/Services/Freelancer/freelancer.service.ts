@@ -88,7 +88,7 @@ export class FreelancerService {
   refuseRequest(requestId: string) {
     return this._http
       .post<ApiResponse>(
-        `${environment.BaseURL}/api/Freelancer/accept/${requestId}`,
+        `${environment.BaseURL}/api/Freelancer/refuse/${requestId}`,
         {}
       )
       .pipe(
@@ -103,12 +103,7 @@ export class FreelancerService {
       );
   }
 
-  getfreelancerBusiness(): Observable<any> {
-    return this._http.get<any>(
-      `${environment.BaseURL}/api/Freelancer/freelancer-profile`
-    );
-  }
-
+ 
   updateFreelancerBusiness(data: any): Observable<any> {
     return this._http.put<any>(
       `${environment.BaseURL}/api/Freelancer/update-freelancer-business`,
@@ -147,4 +142,15 @@ export class FreelancerService {
       data: { title: title, message: message },
     });
   }
+
+  addOfferedService(data: any): Observable<any> {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+  
+    return this._http.post<any>(`${environment.BaseURL}/api/Freelancer/add-offered-service`, formData);
+  }
+  
+
 }

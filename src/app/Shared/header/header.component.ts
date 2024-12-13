@@ -12,7 +12,6 @@ import { LoginService } from '../../Services/Login/login-service';
 export class HeaderComponent implements OnInit {
   roles = signal<string[]>([]);
   isLoggedIn = false; 
-  isFreelancer = false 
   private loginService = inject(LoginService);
   injector: Injector = inject(Injector);
   private _router = inject(Router);
@@ -27,12 +26,7 @@ export class HeaderComponent implements OnInit {
     });
     this.loadRoles();
 
-    effect(() => {
-      this.isFreelancer=(this.roles().includes('Freelancer')); 
-
-    },{
-      injector:this.injector
-    }); 
+     
   }
 
   loadRoles(): void {

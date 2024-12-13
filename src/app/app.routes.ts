@@ -14,6 +14,7 @@ import { SendServiceRequestComponent } from './Components/send-service-request/s
 import { UpdateFreelancerBusinessComponent } from './Components/update-freelancer-business/update-freelancer-business.component';
 import { ChangePasswordComponent } from './Components/change-password/change-password.component';
 import { UpdateProfileComponent } from './Components/update-profile/update-profile.component';
+import { AddOfferedServiceComponent } from './Components/add-offered-service/add-offered-service.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -68,6 +69,11 @@ export const routes: Routes = [
         path: 'SendServiceRequest/:freelancerId',
         component: SendServiceRequestComponent,
         title: 'Send Service Request',
+      },
+      {
+        path: 'addOfferedService',
+        component: AddOfferedServiceComponent,
+        title: 'Add Offered Service',
       },
       {
         path: 'changepassword',

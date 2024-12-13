@@ -1,70 +1,81 @@
-<div class="form-container" @fadeIn>
-  <form [formGroup]="SendServiceRequest" (ngSubmit)="onSubmit()">
-    <h2 class="form-title">Send Service Request</h2>
-
-    <!-- Hidden Freelancer ID field -->
+<div class="body">
+  <div
+    class="container d-flex justify-content-center align-items-center min-vh-100"
+  >
+    <form
+      [formGroup]="SendServiceRequest"
+      (ngSubmit)="onSubmit()"
+      class="p-5 form-container shadow bg-light rounded"
+    >
     <input type="hidden" formControlName="freelancerId" />
 
-    <!-- Name -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" placeholder="Enter Name" />
-      <mat-error
+    <div class="mt-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        id="name"
+        type="text"
+        class="form-control"
+        formControlName="name"
+        placeholder="Enter Name"
+      />
+      <div
+        class="invalid-feedback"
         *ngIf="
           SendServiceRequest.get('name')?.invalid &&
           SendServiceRequest.get('name')?.touched
         "
       >
         Name is required and should be 5-50 characters long.
-      </mat-error>
-    </mat-form-field>
+      </div>
+    </div>
 
     <!-- Price -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Price</mat-label>
+    <div class="mt-3">
+      <label for="price" class="form-label">Price</label>
       <input
-        matInput
-        formControlName="price"
+        id="price"
         type="number"
+        class="form-control"
+        formControlName="price"
         placeholder="Enter Price"
       />
-      <mat-error
+      <div
+        class="invalid-feedback"
         *ngIf="
           SendServiceRequest.get('price')?.invalid &&
           SendServiceRequest.get('price')?.touched
         "
       >
         Price is required.
-      </mat-error>
-    </mat-form-field>
+      </div>
+    </div>
 
     <!-- Description -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Description</mat-label>
+    <div class="mt-3">
+      <label for="description" class="form-label">Description</label>
       <textarea
-        matInput
+        id="description"
+        class="form-control"
         formControlName="description"
         rows="4"
         placeholder="Enter Description"
       ></textarea>
-      <mat-error
+      <div
+        class="invalid-feedback"
         *ngIf="
           SendServiceRequest.get('description')?.invalid &&
           SendServiceRequest.get('description')?.touched
         "
       >
         Description is required and should be 5-300 characters long.
-      </mat-error>
-    </mat-form-field>
+      </div>
+    </div>
 
     <!-- Submit Button -->
     <button
-      mat-raised-button
-      color="primary"
       type="submit"
-      [disabled]="SendServiceRequest.invalid"
-      class="submit-btn"
-    >
+      class="btn btn-success w-100 mt-3 submit-btn"
+      >
       Submit Request
     </button>
   </form>

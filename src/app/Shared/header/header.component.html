@@ -12,7 +12,7 @@
           <li class="nav-item">
             <a class="nav-link px-2 text-white" routerLink="/customerprofile" routerLinkActive="router-link-active">Profile</a>
           </li>}
-          @if(isFreelancer)
+          @if(this.roles().includes('Freelancer'))
           {
             <li class="nav-item">
               <a class="nav-link px-2 text-white" routerLink="/freelancerprofile" routerLinkActive="router-link-active">My Business</a>

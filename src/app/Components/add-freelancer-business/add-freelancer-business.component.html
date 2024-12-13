@@ -9,7 +9,6 @@
     >
       <h2 class="text-center mb-4">Add Freelancer Business</h2>
 
-      <!-- Name Field -->
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input
@@ -17,6 +16,8 @@
           formControlName="name"
           class="form-control"
           placeholder="Enter name"
+          [ngClass]="{ 'is-invalid': addFreelancerBusiness.get('name')?.invalid && addFreelancerBusiness.get('name')?.touched }"
+
         />
         <div
           *ngIf="
@@ -50,6 +51,8 @@
           formControlName="description"
           class="form-control"
           placeholder="Enter business description"
+          [ngClass]="{ 'is-invalid': addFreelancerBusiness.get('description')?.invalid && addFreelancerBusiness.get('description')?.touched }"
+
         ></textarea>
         <div
           *ngIf="
@@ -81,6 +84,8 @@
           formControlName="profession"
           class="form-control"
           placeholder="Enter profession"
+          [ngClass]="{ 'is-invalid': addFreelancerBusiness.get('profession')?.invalid && addFreelancerBusiness.get('profession')?.touched }"
+
         />
         <div
           *ngIf="
@@ -94,11 +99,16 @@
             >Profession is required.</small
           >
           <small
+          *ngIf="addFreelancerBusiness.get('profession')?.errors?.['minlength']"
+          >At least 2 letters</small
+        >
+          <small
             *ngIf="addFreelancerBusiness.get('profession')?.errors?.['pattern']"
             >Profession can contain only letters.</small
           >
+         
           <small
-            *ngIf="addFreelancerBusiness.get('description')?.errors?.['maxlength']"
+            *ngIf="addFreelancerBusiness.get('profession')?.errors?.['maxlength']"
             >You have exceeded the character limit.</small
           >
         </div>
@@ -123,6 +133,8 @@
             formControlName="phoneNumber"
             class="form-control"
             placeholder="Enter phone number"
+            [ngClass]="{ 'is-invalid': addFreelancerBusiness.get('phoneNumber')?.invalid && addFreelancerBusiness.get('phoneNumber')?.touched }"
+
           />
         </div>
         <div
@@ -151,6 +163,8 @@
           formControlName="street"
           class="form-control"
           placeholder="Enter street"
+          [ngClass]="{ 'is-invalid': addFreelancerBusiness.get('street')?.invalid && addFreelancerBusiness.get('street')?.touched }"
+
         />
         <div
           *ngIf="
@@ -183,6 +197,8 @@
           formControlName="city"
           class="form-control"
           placeholder="Enter city"
+          [ngClass]="{ 'is-invalid': addFreelancerBusiness.get('city')?.invalid && addFreelancerBusiness.get('city')?.touched }"
+
         />
         <div
           *ngIf="
@@ -212,6 +228,8 @@
           formControlName="state"
           class="form-control"
           placeholder="Enter state"
+          [ngClass]="{ 'is-invalid': addFreelancerBusiness.get('state')?.invalid && addFreelancerBusiness.get('state')?.touched }"
+
         />
         <div
           *ngIf="
@@ -246,6 +264,8 @@
               [formControlName]="i"
               class="form-control me-2"
               placeholder="Enter skill"
+              [ngClass]="{ 'is-invalid': addFreelancerBusiness.get('skills')?.invalid && addFreelancerBusiness.get('skills')?.touched }"
+
             />
 
             <div
@@ -276,10 +296,8 @@
         </div>
       </div>
 
-      <!-- Submit Button -->
       <button
         type="submit"
-        [disabled]="!addFreelancerBusiness.valid"
         class="btn btn-success w-100 mt-3 submit-btn"
       >
         Submit

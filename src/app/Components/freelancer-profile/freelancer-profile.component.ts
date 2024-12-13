@@ -30,7 +30,7 @@ export class FreelancerProfileComponent {
   totalPages: number = 0;
 
   servicesPageIndex: number = 1;
-  servicesPageSize: number = 6;
+  servicesPageSize: number = 4;
   servicesTotalPages: number = 0;
 
   private loginService = inject(LoginService);
@@ -50,11 +50,9 @@ export class FreelancerProfileComponent {
   ngOnInit(): void {
     this.ActivatedRoute.paramMap.subscribe((params) => {
       this.freelancerId = params.get('freelancerId');
-      if (this.freelancerId) {
-        this.getFreelancerInfo(this.freelancerId);
-      } else {
-        this.getFreelancerInfo();
-      }
+     
+        this.getFreelancerInfo(this.freelancerId!);
+      
     });
   }
 
@@ -83,7 +81,7 @@ export class FreelancerProfileComponent {
         .getFreelancerRequests(this.pageIndex, this.pageSize)
         .subscribe(
           (response) => {
-            this.requests = response.data;
+            this.requests = response.data.data;
             this.totalPages = response.data.totalPages;
           },
           (error) => {
@@ -105,7 +103,7 @@ export class FreelancerProfileComponent {
         )
         .subscribe(
           (response) => {
-            this.offeredServices = response.data;
+            this.offeredServices = response.data.data;
             this.servicesTotalPages = response.data.totalPages;
             console.log('Sercices : ', response.data);
           },
@@ -187,9 +185,14 @@ export class FreelancerProfileComponent {
     this._router.navigateByUrl('/updateFreelancerBusiness');
   }
 
-  sendServiceRequest() {
-    this._router.navigateByUrl(`/SendServiceRequest/${this.freelancerId}`);
+  AddOfferedService() {
+    this._router.navigateByUrl('/addOfferedService');
   }
+
+  sendServiceRequest() {
+    this._router.navigateByUrl(`/SendServiceRequest/${this.userId}`);
+  }
+ 
 
   openAlertDialog(title: string, message: string) {
     this.dialog.open(AlertDialogComponent, {

@@ -19,6 +19,7 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
   imports: [
     NgIf,
     NgFor,
+    NgClass,
     FormsModule,
     ReactiveFormsModule,
   ],
@@ -143,8 +144,8 @@ export class AddFreelancerBusinessComponent {
     this.addFreelancerBusiness = new FormGroup({
       name: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[a-zA-Z0-9 ]{5,50}$'),
-        Validators.minLength(5),
+        Validators.pattern('^[a-zA-Z0-9 ]{2,50}$'),
+        Validators.minLength(2),
         Validators.maxLength(50),
       ]),
       description: new FormControl('', [
@@ -155,31 +156,31 @@ export class AddFreelancerBusinessComponent {
       ]),
       phoneNumber: new FormControl('', [
         Validators.required,
-        Validators.pattern('^\\+?[0-9]{10,15}$'),
+        Validators.pattern('^\\+?[0-9]{6,15}$'),
       ]),
       profession: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[a-zA-Z ]{5,50}$'),
-        Validators.minLength(5),
+        Validators.pattern('^[a-zA-Z ]{0,50}$'),
+        Validators.minLength(2),
         Validators.maxLength(50),
       ]),
       street: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9\\s.,-]{5,50}$'),
-        Validators.minLength(5),
+        Validators.minLength(2),
         Validators.maxLength(50),
       ]),
       city: new FormControl('', [
         Validators.required,
         Validators.pattern("^[a-zA-Z\\s'-]{2,50}$"),
-        Validators.minLength(5),
+        Validators.minLength(2),
         Validators.maxLength(50),
       ]),
 
       state: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z\\s]{2,40}$'),
-        Validators.minLength(5),
+        Validators.minLength(2),
         Validators.maxLength(50),
       ]),
 

@@ -56,28 +56,35 @@
       <!-- Offered Services -->
       <div class="container-fluid my-3">
         <h3>Offered Services</h3>
-        <a class="btn text-bg-dark m-2">Add offered services</a>
-        <a class="btn text-bg-dark m-2" (click)="sendServiceRequest()">Send services Request</a>
+        @if(freelancerId){
+          <a class="btn text-bg-dark m-2" (click)="sendServiceRequest()">Send services Request</a>
+
+        }
+        @else {
+          <a class="btn text-bg-dark m-2" (click)="AddOfferedService()">Add offered services</a>
+
+        }
 
         <div class="row">
           @if (offeredServices.length > 0) { @for ( item of offeredServices;
           track item.id) {
-          <div class="col-lg-3 col-md-4 col-sm-12 mb-4">
-            <a routerLink="" routerLinkActive="router-link-active"  style="text-decoration: none" >
-              <div class="card text-center">
-                <img
+        <div class="col-lg-3 col-md-4 col-sm-12 mb-4">
+          <a routerLink="" routerLinkActive="router-link-active" style="text-decoration: none">
+            <div class="card text-center">
+              <img
                   src="https://plus.unsplash.com/premium_photo-1676998931123-75789162f170?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="Service Image"
-                  class="card-img-top"
-                />
-                <div class="card-body text-start">
-                  <h2 class="card-title text-center">{{ item.name }}</h2>
-                  <h2 class="card-title">{{ item.price }}</h2>
-                  <h4 class="card-title">{{ item.description }}</h4>
-                </div>
+                alt="Service Image"
+                class="card-img-top"
+              />
+              <div class="card-body ">
+                <h2 class="card-title text-center">{{ item.name }}</h2>
+                <h2 class="card-title">{{ item.price | currency }}</h2>
+                <h4 class="card-title">{{ item.description }}</h4>
               </div>
-            </a>
-          </div>
+            </div>
+          </a>
+        </div>
+        
           } } @else {
           <p class="text-center">No offered services</p>
           }
@@ -139,24 +146,43 @@
               </tr>
             </thead>
             <tbody>
-              @for (item of requests; track item.customerId) {
+              @for (item of requests; track item.id) {
               <tr>
-                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
                 <td>{{ item.status }}</td>
                 <td>{{ item.customerName }}</td>
                 <td>{{ item.dateTime }}</td>
+
                 <td>
                   <div class="d-flex justify-content-center">
-                    <a
-                      class="btn btn-primary mx-1"
-                      (click)="acceptRequest(item.id)"
-                      >Accept</a
-                    >
-                    <a
-                      class="btn btn-secondary mx-1"
-                      (click)="refuseRequest(item.id)"
-                      >Refuse</a
-                    >
+                 @if(item.status=='Accepted')
+                 {
+                  <a
+                  class="btn btn-primary mx-1 "
+                  style="padding-left: 62px;padding-right: 62px;"
+                  href=""
+                  >Chat</a
+                >
+                 } @else if(item.status=='Refused'){
+                  <a
+                  class="btn btn-dark mx-1 disabled "
+                  style="padding-left: 50px;padding-right: 50px;"
+                  href=""
+                  >Refused</a
+                >
+                 }
+                 @else {
+                  <a
+                  class="btn btn-primary mx-1"
+                  (click)="acceptRequest(item.id)"
+                  >Accept</a
+                >
+                <a
+                  class="btn btn-secondary mx-1"
+                  (click)="refuseRequest(item.id)"
+                  >Refuse</a
+                >
+                 }
                   </div>
                 </td>
               </tr>

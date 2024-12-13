@@ -181,8 +181,7 @@ export class UpdateFreelancerBusinessComponent {
       skills: new FormArray([]),
     });
 
-    // Call the API to get data
-    this._freelancerService.getfreelancerBusiness().subscribe({
+    this._freelancerService.getFreelancer().subscribe({
       next: (response) => {
         // console.log('ok', response);
         this.updateFreelancerBusiness.patchValue({
@@ -271,7 +270,6 @@ export class UpdateFreelancerBusinessComponent {
             }, 3000);
           },
           error: (err) => {
-            // console.error('Error occurred in API call:', err);
             this.openAlertDialog('Error', err);
             setTimeout(() => {
               this._router.navigateByUrl('/home');

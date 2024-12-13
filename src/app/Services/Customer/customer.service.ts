@@ -24,11 +24,11 @@ export class CustomerService {
       })
     );}
 
-    getCustomerRequests(pageIndex: number = 1, pageSize: number = 12): Observable<ApiResponse> {
+    getCustomerRequests(pageIndex: number = 1, pageSize: number = 10): Observable<ApiResponse> {
       let params = new HttpParams()
         .set('pageIndex', pageIndex.toString())
         .set('pageSize', pageSize.toString());
-      return this._http.get<ApiResponse>(`http://localhost:5104/api/Account/get-requests?pageIndex=1&pageSize=10`,{ })
+      return this._http.get<ApiResponse>( `${environment.BaseURL}/api/Account/get-requests`,{params})
     .pipe(
       catchError(error => {
         console.error('Error occurred in API call:', error);
@@ -41,10 +41,8 @@ export class CustomerService {
   }
 
   SendServiceRequest(body: any): Observable < any > {
-    return this._http.post(
-      `${environment.BaseURL}/api/Account/send-service-request`, body,
-      {responseType: 'text'}
-    );
+    return this._http.post<any>(
+      `${environment.BaseURL}/api/Account/send-service-request`, body    );
   }
 
 
